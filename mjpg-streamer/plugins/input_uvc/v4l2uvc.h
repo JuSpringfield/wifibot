@@ -119,7 +119,7 @@ typedef struct {
     struct vdIn *videoIn;
 } context;
 
-context cams[MAX_INPUT_PLUGINS];
+extern context cams[MAX_INPUT_PLUGINS];
 
 int init_videoIn(struct vdIn *vd, char *device, int width, int height, int fps, int format, int grabmethod, globals *pglobal, int id);
 void enumerateControls(struct vdIn *vd, globals *pglobal, int id);
