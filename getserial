@@ -1,0 +1,3 @@
+FT03IXBV
+
+udevadm info -a -n /dev/ttyUSB0 | grep '{serial}' | head -n1

@@ -1,0 +1,662 @@
+info it worked if it ends with ok
+verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'install', 'ws' ]
+info using npm@1.1.4
+info using node@v0.6.19
+verbose config file /home/pi/.npmrc
+verbose config file /usr/etc/npmrc
+verbose config file /usr/share/npm/npmrc
+verbose cache add [ 'ws', null ]
+silly cache add: name, spec, args [ undefined, 'ws', [ 'ws', null ] ]
+verbose parsed url { pathname: 'ws', path: 'ws', href: 'ws' }
+verbose addNamed [ 'ws', '' ]
+verbose addNamed [ null, '' ]
+silly name, range, hasData [ 'ws', '', false ]
+verbose raw, before any munging ws
+verbose url resolving [ 'https://registry.npmjs.org/', './ws' ]
+verbose url resolved https://registry.npmjs.org/ws
+verbose etag "B3HHNR70Y7YBQHPTRKJ9A2IFH"
+http GET https://registry.npmjs.org/ws
+silly get cb [ 304, undefined ]
+verbose etag ws from cache
+silly name, range, hasData 2 [ 'ws', '', true ]
+silly versions [ 'ws',
+silly versions   [ '0.2.6',
+silly versions     '0.2.8',
+silly versions     '0.2.9',
+silly versions     '0.3.0',
+silly versions     '0.3.1',
+silly versions     '0.3.2',
+silly versions     '0.3.3',
+silly versions     '0.3.4',
+silly versions     '0.3.4-2',
+silly versions     '0.3.5',
+silly versions     '0.3.5-2',
+silly versions     '0.3.5-3',
+silly versions     '0.3.5-4',
+silly versions     '0.3.6',
+silly versions     '0.3.7',
+silly versions     '0.3.8',
+silly versions     '0.3.9',
+silly versions     '0.4.0',
+silly versions     '0.4.1',
+silly versions     '0.4.2',
+silly versions     '0.4.3',
+silly versions     '0.4.5',
+silly versions     '0.4.6',
+silly versions     '0.4.7',
+silly versions     '0.4.8',
+silly versions     '0.4.9',
+silly versions     '0.4.10',
+silly versions     '0.4.11',
+silly versions     '0.4.12',
+silly versions     '0.4.13',
+silly versions     '0.4.14',
+silly versions     '0.4.15',
+silly versions     '0.4.16',
+silly versions     '0.4.17',
+silly versions     '0.4.18',
+silly versions     '0.4.19',
+silly versions     '0.4.20',
+silly versions     '0.4.21',
+silly versions     '0.4.22',
+silly versions     '0.4.23',
+silly versions     '0.4.24',
+silly versions     '0.4.25',
+silly versions     '0.4.27',
+silly versions     '0.4.28',
+silly versions     '0.4.29',
+silly versions     '0.4.30',
+silly versions     '0.4.31',
+silly versions     '0.4.32',
+silly versions     '0.5.0',
+silly versions     '0.6.0',
+silly versions     '0.6.1',
+silly versions     '0.6.2',
+silly versions     '0.6.3',
+silly versions     '0.6.4',
+silly versions     '0.6.5',
+silly versions     '0.7.0',
+silly versions     '0.7.1',
+silly versions     '0.7.2',
+silly versions     '0.8.0',
+silly versions     '0.8.1' ] ]
+verbose bin dist [ '0.6-ares1.9.1-evundefined-openssl1.0.1c-v83.8.9.20-linux-arm-3.18.7-v7+',
+verbose bin dist   { shasum: '6b65273b99193c5f067a4cf5809598f777e3b759',
+verbose bin dist     tarball: 'http://registry.npmjs.org/ws/-/ws-0.8.1.tgz' } ]
+verbose caching /home/pi/.npm/ws/0.8.1/package/package.json
+verbose loadDefaults ws@0.8.1
+silly resolved [ { author: 
+silly resolved      { name: 'Einar Otto Stangvik',
+silly resolved        email: 'einaros@gmail.com',
+silly resolved        url: 'http://2x.io' },
+silly resolved     name: 'ws',
+silly resolved     description: 'simple to use, blazing fast and thoroughly tested websocket client, server and console for node.js, up-to-date against RFC-6455',
+silly resolved     version: '0.8.1',
+silly resolved     license: 'MIT',
+silly resolved     keywords: 
+silly resolved      [ 'Hixie',
+silly resolved        'HyBi',
+silly resolved        'Push',
+silly resolved        'RFC-6455',
+silly resolved        'WebSocket',
+silly resolved        'WebSockets',
+silly resolved        'real-time' ],
+silly resolved     repository: { type: 'git', url: 'git://github.com/websockets/ws.git' },
+silly resolved     scripts: { test: 'make test' },
+silly resolved     dependencies: 
+silly resolved      { options: '>=0.0.5',
+silly resolved        ultron: '1.0.x',
+silly resolved        bufferutil: '1.2.x',
+silly resolved        'utf-8-validate': '1.2.x' },
+silly resolved     optionalDependencies: { bufferutil: '1.2.x', 'utf-8-validate': '1.2.x' },
+silly resolved     devDependencies: 
+silly resolved      { ansi: '0.3.x',
+silly resolved        benchmark: '0.3.x',
+silly resolved        'expect.js': '0.3.x',
+silly resolved        mocha: '2.2.x',
+silly resolved        should: '4.3.x',
+silly resolved        tinycolor: '0.0.x' },
+silly resolved     browser: './lib/browser.js',
+silly resolved     component: { scripts: { 'ws/index.js': './lib/browser.js' } },
+silly resolved     gypfile: true,
+silly resolved     _id: 'ws@0.8.1',
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.4',
+silly resolved     _nodeVersion: 'v0.6.19',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'ws' } ]
+info into /home/pi/jsmpeg-master ws@0.8.1
+info installOne ws@0.8.1
+verbose from cache /home/pi/.npm/ws/0.8.1/package/package.json
+info unbuild /home/pi/jsmpeg-master/node_modules/ws
+verbose mkdir (expected) error ENOENT, stat '/home/pi/jsmpeg-master/node_modules/___ws.npm'
+verbose mkdir done: /home/pi/jsmpeg-master/node_modules/___ws.npm 755
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /home/pi/jsmpeg-master/node_modules/ws
+silly gunzTarPerm modes [ '755', '644' ]
+silly afterUntar ok
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/.npmignore
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/.travis.yml
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/README.md
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/package.json
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/index.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/Makefile
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/WebSocketServer.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/PerMessageDeflate.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/Validation.fallback.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/Receiver.hixie.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/Sender.hixie.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/BufferPool.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/Sender.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/BufferUtil.fallback.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/BufferUtil.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/Receiver.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/WebSocket.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/ErrorCodes.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/Extensions.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/Validation.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/___ws.npm/package/lib/browser.js
+verbose gunzed /home/pi/jsmpeg-master/node_modules/___ws.npm/package
+verbose rm'ed /home/pi/jsmpeg-master/node_modules/ws
+verbose renamed [ '/home/pi/jsmpeg-master/node_modules/___ws.npm/package',
+verbose renamed   '/home/pi/jsmpeg-master/node_modules/ws' ]
+verbose caching /home/pi/jsmpeg-master/node_modules/ws/package.json
+verbose loadDefaults ws@0.8.1
+info preinstall ws@0.8.1
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/package.json
+verbose readDependencies: using package.json deps
+verbose cache add [ 'options@>=0.0.5', null ]
+silly cache add: name, spec, args [ undefined, 'options@>=0.0.5', [ 'options@>=0.0.5', null ] ]
+verbose parsed url { pathname: 'options@', path: 'options@', href: 'options@' }
+silly cache add: name, spec, args [ 'options', '>=0.0.5', [ 'options', '>=0.0.5' ] ]
+verbose parsed url { pathname: '=0.0.5', path: '=0.0.5', href: '=0.0.5' }
+verbose addNamed [ 'options', '>=0.0.5' ]
+verbose addNamed [ null, '>=0.0.5' ]
+silly name, range, hasData [ 'options', '>=0.0.5', false ]
+verbose cache add [ 'ultron@1.0.x', null ]
+silly cache add: name, spec, args [ undefined, 'ultron@1.0.x', [ 'ultron@1.0.x', null ] ]
+verbose parsed url { pathname: 'ultron@1.0.x',
+verbose parsed url   path: 'ultron@1.0.x',
+verbose parsed url   href: 'ultron@1.0.x' }
+silly cache add: name, spec, args [ 'ultron', '1.0.x', [ 'ultron', '1.0.x' ] ]
+verbose parsed url { pathname: '1.0.x', path: '1.0.x', href: '1.0.x' }
+verbose addNamed [ 'ultron', '1.0.x' ]
+verbose addNamed [ null, '>=1.0.0- <1.1.0-' ]
+silly name, range, hasData [ 'ultron', '>=1.0.0- <1.1.0-', false ]
+verbose cache add [ 'bufferutil@1.2.x', null ]
+silly cache add: name, spec, args [ undefined, 'bufferutil@1.2.x', [ 'bufferutil@1.2.x', null ] ]
+verbose parsed url { pathname: 'bufferutil@1.2.x',
+verbose parsed url   path: 'bufferutil@1.2.x',
+verbose parsed url   href: 'bufferutil@1.2.x' }
+silly cache add: name, spec, args [ 'bufferutil', '1.2.x', [ 'bufferutil', '1.2.x' ] ]
+verbose parsed url { pathname: '1.2.x', path: '1.2.x', href: '1.2.x' }
+verbose addNamed [ 'bufferutil', '1.2.x' ]
+verbose addNamed [ null, '>=1.2.0- <1.3.0-' ]
+silly name, range, hasData [ 'bufferutil', '>=1.2.0- <1.3.0-', false ]
+verbose cache add [ 'utf-8-validate@1.2.x', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'utf-8-validate@1.2.x',
+silly cache add: name, spec, args   [ 'utf-8-validate@1.2.x', null ] ]
+verbose parsed url { pathname: 'utf-8-validate@1.2.x',
+verbose parsed url   path: 'utf-8-validate@1.2.x',
+verbose parsed url   href: 'utf-8-validate@1.2.x' }
+silly cache add: name, spec, args [ 'utf-8-validate', '1.2.x', [ 'utf-8-validate', '1.2.x' ] ]
+verbose parsed url { pathname: '1.2.x', path: '1.2.x', href: '1.2.x' }
+verbose addNamed [ 'utf-8-validate', '1.2.x' ]
+verbose addNamed [ null, '>=1.2.0- <1.3.0-' ]
+silly name, range, hasData [ 'utf-8-validate', '>=1.2.0- <1.3.0-', false ]
+verbose raw, before any munging options
+verbose url resolving [ 'https://registry.npmjs.org/', './options' ]
+verbose url resolved https://registry.npmjs.org/options
+verbose etag "29I1H7JJVEWWNWG0GMKORGQTC"
+http GET https://registry.npmjs.org/options
+verbose raw, before any munging ultron
+verbose url resolving [ 'https://registry.npmjs.org/', './ultron' ]
+verbose url resolved https://registry.npmjs.org/ultron
+verbose etag "1FZPOUJM9TYE8CVALWHEK91KT"
+http GET https://registry.npmjs.org/ultron
+verbose raw, before any munging bufferutil
+verbose url resolving [ 'https://registry.npmjs.org/', './bufferutil' ]
+verbose url resolved https://registry.npmjs.org/bufferutil
+verbose etag "9NLYGHUX8MGYC2LICJDWKWNPW"
+http GET https://registry.npmjs.org/bufferutil
+verbose raw, before any munging utf-8-validate
+verbose url resolving [ 'https://registry.npmjs.org/', './utf-8-validate' ]
+verbose url resolved https://registry.npmjs.org/utf-8-validate
+verbose etag "E7XYFT7FUBMH6H6XYWMIRAGJ0"
+http GET https://registry.npmjs.org/utf-8-validate
+silly get cb [ 304, undefined ]
+verbose etag utf-8-validate from cache
+silly name, range, hasData 2 [ 'utf-8-validate', '>=1.2.0- <1.3.0-', true ]
+silly versions [ 'utf-8-validate',
+silly versions   [ '1.0.0', '1.0.1', '1.1.0', '1.2.0', '1.2.1' ] ]
+verbose bin dist [ '0.6-ares1.9.1-evundefined-openssl1.0.1c-v83.8.9.20-linux-arm-3.18.7-v7+',
+verbose bin dist   { shasum: '44cb7c6eead73d6b40448f71f745904357b9f72c',
+verbose bin dist     tarball: 'http://registry.npmjs.org/utf-8-validate/-/utf-8-validate-1.2.1.tgz' } ]
+silly get cb [ 304, undefined ]
+verbose etag bufferutil from cache
+silly get cb [ 304, undefined ]
+verbose etag options from cache
+verbose caching /home/pi/.npm/utf-8-validate/1.2.1/package/package.json
+verbose loadDefaults utf-8-validate@1.2.1
+silly name, range, hasData 2 [ 'bufferutil', '>=1.2.0- <1.3.0-', true ]
+silly versions [ 'bufferutil',
+silly versions   [ '1.0.0', '1.0.1', '1.1.0', '1.2.0', '1.2.1' ] ]
+verbose bin dist [ '0.6-ares1.9.1-evundefined-openssl1.0.1c-v83.8.9.20-linux-arm-3.18.7-v7+',
+verbose bin dist   { shasum: '37be5d36e1e06492221e68d474b1ac58e510cbd7',
+verbose bin dist     tarball: 'http://registry.npmjs.org/bufferutil/-/bufferutil-1.2.1.tgz' } ]
+silly name, range, hasData 2 [ 'options', '>=0.0.5', true ]
+silly versions [ 'options',
+silly versions   [ '0.0.1', '0.0.2', '0.0.3', '0.0.4', '0.0.5', '0.0.6' ] ]
+verbose bin dist [ '0.6-ares1.9.1-evundefined-openssl1.0.1c-v83.8.9.20-linux-arm-3.18.7-v7+',
+verbose bin dist   { shasum: 'ec22d312806bb53e731773e7cdaefcf1c643128f',
+verbose bin dist     tarball: 'http://registry.npmjs.org/options/-/options-0.0.6.tgz' } ]
+silly get cb [ 304, undefined ]
+verbose etag ultron from cache
+verbose caching /home/pi/.npm/bufferutil/1.2.1/package/package.json
+verbose loadDefaults bufferutil@1.2.1
+verbose caching /home/pi/.npm/options/0.0.6/package/package.json
+verbose loadDefaults options@0.0.6
+silly name, range, hasData 2 [ 'ultron', '>=1.0.0- <1.1.0-', true ]
+silly versions [ 'ultron', [ '0.0.0', '1.0.0', '1.0.1', '1.0.2' ] ]
+verbose bin dist [ '0.6-ares1.9.1-evundefined-openssl1.0.1c-v83.8.9.20-linux-arm-3.18.7-v7+',
+verbose bin dist   { shasum: 'ace116ab557cd197386a4e88f4685378c8b2e4fa',
+verbose bin dist     tarball: 'http://registry.npmjs.org/ultron/-/ultron-1.0.2.tgz' } ]
+verbose caching /home/pi/.npm/ultron/1.0.2/package/package.json
+verbose loadDefaults ultron@1.0.2
+silly resolved [ { name: 'utf-8-validate',
+silly resolved     version: '1.2.1',
+silly resolved     description: 'Validate UTF-8 for Web',
+silly resolved     main: 'index.js',
+silly resolved     scripts: { test: 'echo "Only testing builds, test have to be extraced from `ws`" && exit 0' },
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/websockets/utf-8-validate.git' },
+silly resolved     keywords: [ 'utf-8-validate' ],
+silly resolved     author: 
+silly resolved      { name: 'Einar Otto Stangvik',
+silly resolved        email: 'einaros@gmail.com',
+silly resolved        url: 'http://2x.io' },
+silly resolved     license: 'MIT',
+silly resolved     bugs: { url: 'https://github.com/websockets/utf-8-validate/issues' },
+silly resolved     homepage: 'https://github.com/websockets/utf-8-validate',
+silly resolved     dependencies: { bindings: '1.2.x', nan: '^2.0.5' },
+silly resolved     _id: 'utf-8-validate@1.2.1',
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.4',
+silly resolved     _nodeVersion: 'v0.6.19',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'utf-8-validate@1.2.x' },
+silly resolved   { name: 'bufferutil',
+silly resolved     version: '1.2.1',
+silly resolved     description: 'WebSocket buffer utils',
+silly resolved     main: 'index.js',
+silly resolved     scripts: { test: 'echo "Only testing builds, test have to be extraced from `ws`" && exit 0' },
+silly resolved     repository: 
+silly resolved      { type: 'git',
+silly resolved        url: 'git://github.com/websockets/bufferutil.git' },
+silly resolved     keywords: [ 'bufferutil' ],
+silly resolved     author: 
+silly resolved      { name: 'Einar Otto Stangvik',
+silly resolved        email: 'einaros@gmail.com',
+silly resolved        url: 'http://2x.io' },
+silly resolved     license: 'MIT',
+silly resolved     bugs: { url: 'https://github.com/websockets/bufferutil/issues' },
+silly resolved     homepage: 'https://github.com/websockets/bufferutil',
+silly resolved     dependencies: { bindings: '1.2.x', nan: '^2.0.5' },
+silly resolved     _id: 'bufferutil@1.2.1',
+silly resolved     devDependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.4',
+silly resolved     _nodeVersion: 'v0.6.19',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'bufferutil@1.2.x' },
+silly resolved   { author: 
+silly resolved      { name: 'Einar Otto Stangvik',
+silly resolved        email: 'einaros@gmail.com',
+silly resolved        url: 'http://2x.io' },
+silly resolved     name: 'options',
+silly resolved     description: 'A very light-weight in-code option parsers for node.js.',
+silly resolved     version: '0.0.6',
+silly resolved     repository: { type: 'git', url: 'git://github.com/einaros/options.js.git' },
+silly resolved     main: 'lib/options',
+silly resolved     scripts: { test: 'make test' },
+silly resolved     engines: { node: '>=0.4.0' },
+silly resolved     dependencies: {},
+silly resolved     devDependencies: { mocha: 'latest' },
+silly resolved     _id: 'options@0.0.6',
+silly resolved     optionalDependencies: {},
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.4',
+silly resolved     _nodeVersion: 'v0.6.19',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'options@>=0.0.5' },
+silly resolved   { name: 'ultron',
+silly resolved     version: '1.0.2',
+silly resolved     description: 'Ultron is high-intelligence robot. It gathers intel so it can start improving upon his rudimentary design',
+silly resolved     main: 'index.js',
+silly resolved     scripts: 
+silly resolved      { '100%': 'istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100',
+silly resolved        test: 'mocha test.js',
+silly resolved        watch: 'mocha --watch test.js',
+silly resolved        coverage: 'istanbul cover ./node_modules/.bin/_mocha -- test.js',
+silly resolved        'test-travis': 'istanbul cover node_modules/.bin/_mocha --report lcovonly -- test.js' },
+silly resolved     repository: { type: 'git', url: 'git://github.com/unshiftio/ultron.git' },
+silly resolved     keywords: 
+silly resolved      [ 'Ultron',
+silly resolved        'robot',
+silly resolved        'gather',
+silly resolved        'intelligence',
+silly resolved        'event',
+silly resolved        'events',
+silly resolved        'eventemitter',
+silly resolved        'emitter',
+silly resolved        'cleanup' ],
+silly resolved     author: { name: 'Arnout Kazemier' },
+silly resolved     license: 'MIT',
+silly resolved     devDependencies: 
+silly resolved      { assume: '1.2.x',
+silly resolved        eventemitter3: '1.1.x',
+silly resolved        istanbul: '0.3.x',
+silly resolved        mocha: '2.2.x',
+silly resolved        'pre-commit': '1.0.x' },
+silly resolved     bugs: { url: 'https://github.com/unshiftio/ultron/issues' },
+silly resolved     homepage: 'https://github.com/unshiftio/ultron',
+silly resolved     _id: 'ultron@1.0.2',
+silly resolved     dependencies: {},
+silly resolved     optionalDependencies: {},
+silly resolved     engines: { node: '*' },
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.4',
+silly resolved     _nodeVersion: 'v0.6.19',
+silly resolved     _defaultsLoaded: true,
+silly resolved     _from: 'ultron@1.0.x' } ]
+info into /home/pi/jsmpeg-master/node_modules/ws utf-8-validate@1.2.1
+info into /home/pi/jsmpeg-master/node_modules/ws bufferutil@1.2.1
+info into /home/pi/jsmpeg-master/node_modules/ws options@0.0.6
+info into /home/pi/jsmpeg-master/node_modules/ws ultron@1.0.2
+info installOne utf-8-validate@1.2.1
+info installOne bufferutil@1.2.1
+info installOne options@0.0.6
+info installOne ultron@1.0.2
+verbose from cache /home/pi/.npm/utf-8-validate/1.2.1/package/package.json
+info unbuild /home/pi/jsmpeg-master/node_modules/ws/node_modules/utf-8-validate
+verbose from cache /home/pi/.npm/bufferutil/1.2.1/package/package.json
+info unbuild /home/pi/jsmpeg-master/node_modules/ws/node_modules/bufferutil
+verbose from cache /home/pi/.npm/options/0.0.6/package/package.json
+info unbuild /home/pi/jsmpeg-master/node_modules/ws/node_modules/options
+verbose from cache /home/pi/.npm/ultron/1.0.2/package/package.json
+info unbuild /home/pi/jsmpeg-master/node_modules/ws/node_modules/ultron
+verbose mkdir (expected) error ENOENT, stat '/home/pi/jsmpeg-master/node_modules/ws/node_modules'
+verbose mkdir (expected) error ENOENT, stat '/home/pi/jsmpeg-master/node_modules/ws/node_modules'
+verbose mkdir (expected) error ENOENT, stat '/home/pi/jsmpeg-master/node_modules/ws/node_modules'
+verbose mkdir (expected) error ENOENT, stat '/home/pi/jsmpeg-master/node_modules/ws/node_modules'
+verbose mkdir (expected) error ENOENT, stat '/home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm'
+verbose mkdir done: /home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm 755
+verbose mkdir (expected) error ENOENT, stat '/home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm'
+verbose mkdir (expected) error ENOENT, stat '/home/pi/jsmpeg-master/node_modules/ws/node_modules/___options.npm'
+verbose mkdir (expected) error ENOENT, stat '/home/pi/jsmpeg-master/node_modules/ws/node_modules/___ultron.npm'
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /home/pi/jsmpeg-master/node_modules/ws/node_modules/utf-8-validate
+silly gunzTarPerm modes [ '755', '644' ]
+verbose mkdir done: /home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm 755
+verbose mkdir done: /home/pi/jsmpeg-master/node_modules/ws/node_modules/___options.npm 755
+verbose mkdir done: /home/pi/jsmpeg-master/node_modules/ws/node_modules/___ultron.npm 755
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /home/pi/jsmpeg-master/node_modules/ws/node_modules/bufferutil
+silly gunzTarPerm modes [ '755', '644' ]
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /home/pi/jsmpeg-master/node_modules/ws/node_modules/options
+silly gunzTarPerm modes [ '755', '644' ]
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /home/pi/jsmpeg-master/node_modules/ws/node_modules/ultron
+silly gunzTarPerm modes [ '755', '644' ]
+silly afterUntar ok
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___options.npm/package
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___options.npm/package/.npmignore
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___options.npm/package/README.md
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___options.npm/package/package.json
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___options.npm/package/Makefile
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___options.npm/package/lib
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___options.npm/package/lib/options.js
+verbose gunzed /home/pi/jsmpeg-master/node_modules/ws/node_modules/___options.npm/package
+verbose rm'ed /home/pi/jsmpeg-master/node_modules/ws/node_modules/options
+verbose renamed [ '/home/pi/jsmpeg-master/node_modules/ws/node_modules/___options.npm/package',
+verbose renamed   '/home/pi/jsmpeg-master/node_modules/ws/node_modules/options' ]
+verbose caching /home/pi/jsmpeg-master/node_modules/ws/node_modules/options/package.json
+verbose loadDefaults options@0.0.6
+silly afterUntar ok
+info preinstall options@0.0.6
+silly afterUntar ok
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/node_modules/options/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/node_modules/options/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /home/pi/jsmpeg-master/node_modules/ws/node_modules/options
+info build /home/pi/jsmpeg-master/node_modules/ws/node_modules/options
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/node_modules/options/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/home/pi/jsmpeg-master/node_modules/ws/node_modules' ]
+info linkStuff options@0.0.6
+verbose linkBins options@0.0.6
+verbose linkMans options@0.0.6
+verbose rebuildBundles options@0.0.6
+info install options@0.0.6
+info postinstall options@0.0.6
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm/package
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm/package/binding.gyp
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm/package/fallback.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm/package/.npmignore
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm/package/.travis.yml
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm/package/README.md
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm/package/package.json
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm/package/index.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm/package/src
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm/package/src/validation.cc
+silly afterUntar ok
+verbose installOne cb options@0.0.6
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm/package
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm/package/binding.gyp
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm/package/fallback.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm/package/.npmignore
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm/package/.travis.yml
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm/package/README.md
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm/package/package.json
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm/package/index.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm/package/src
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm/package/src/bufferutil.cc
+verbose gunzed /home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm/package
+verbose rm'ed /home/pi/jsmpeg-master/node_modules/ws/node_modules/utf-8-validate
+verbose renamed [ '/home/pi/jsmpeg-master/node_modules/ws/node_modules/___utf-8-validate.npm/package',
+verbose renamed   '/home/pi/jsmpeg-master/node_modules/ws/node_modules/utf-8-validate' ]
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___ultron.npm/package
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___ultron.npm/package/.npmignore
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___ultron.npm/package/.travis.yml
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___ultron.npm/package/test.js
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___ultron.npm/package/LICENSE
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___ultron.npm/package/README.md
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___ultron.npm/package/package.json
+silly asyncMap in gTP /home/pi/jsmpeg-master/node_modules/ws/node_modules/___ultron.npm/package/index.js
+verbose gunzed /home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm/package
+verbose rm'ed /home/pi/jsmpeg-master/node_modules/ws/node_modules/bufferutil
+verbose renamed [ '/home/pi/jsmpeg-master/node_modules/ws/node_modules/___bufferutil.npm/package',
+verbose renamed   '/home/pi/jsmpeg-master/node_modules/ws/node_modules/bufferutil' ]
+verbose gunzed /home/pi/jsmpeg-master/node_modules/ws/node_modules/___ultron.npm/package
+verbose caching /home/pi/jsmpeg-master/node_modules/ws/node_modules/utf-8-validate/package.json
+verbose loadDefaults utf-8-validate@1.2.1
+verbose rm'ed /home/pi/jsmpeg-master/node_modules/ws/node_modules/ultron
+verbose renamed [ '/home/pi/jsmpeg-master/node_modules/ws/node_modules/___ultron.npm/package',
+verbose renamed   '/home/pi/jsmpeg-master/node_modules/ws/node_modules/ultron' ]
+verbose caching /home/pi/jsmpeg-master/node_modules/ws/node_modules/bufferutil/package.json
+verbose loadDefaults bufferutil@1.2.1
+info preinstall utf-8-validate@1.2.1
+verbose caching /home/pi/jsmpeg-master/node_modules/ws/node_modules/ultron/package.json
+verbose loadDefaults ultron@1.0.2
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/node_modules/utf-8-validate/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/node_modules/utf-8-validate/package.json
+info preinstall bufferutil@1.2.1
+verbose readDependencies: using package.json deps
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/node_modules/bufferutil/package.json
+info preinstall ultron@1.0.2
+verbose readDependencies: using package.json deps
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/node_modules/bufferutil/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/node_modules/ultron/package.json
+verbose readDependencies: using package.json deps
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/node_modules/ultron/package.json
+verbose readDependencies: using package.json deps
+silly resolved []
+verbose about to build /home/pi/jsmpeg-master/node_modules/ws/node_modules/ultron
+info build /home/pi/jsmpeg-master/node_modules/ws/node_modules/ultron
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/node_modules/ultron/package.json
+verbose linkStuff [ false,
+verbose linkStuff   false,
+verbose linkStuff   false,
+verbose linkStuff   '/home/pi/jsmpeg-master/node_modules/ws/node_modules' ]
+info linkStuff ultron@1.0.2
+verbose linkBins ultron@1.0.2
+verbose linkMans ultron@1.0.2
+verbose rebuildBundles ultron@1.0.2
+info install ultron@1.0.2
+verbose cache add [ 'bindings@1.2.x', null ]
+silly cache add: name, spec, args [ undefined, 'bindings@1.2.x', [ 'bindings@1.2.x', null ] ]
+verbose parsed url { pathname: 'bindings@1.2.x',
+verbose parsed url   path: 'bindings@1.2.x',
+verbose parsed url   href: 'bindings@1.2.x' }
+silly cache add: name, spec, args [ 'bindings', '1.2.x', [ 'bindings', '1.2.x' ] ]
+verbose parsed url { pathname: '1.2.x', path: '1.2.x', href: '1.2.x' }
+verbose addNamed [ 'bindings', '1.2.x' ]
+verbose addNamed [ null, '>=1.2.0- <1.3.0-' ]
+silly name, range, hasData [ 'bindings', '>=1.2.0- <1.3.0-', false ]
+verbose cache add [ 'nan@^2.0.5', null ]
+silly cache add: name, spec, args [ undefined, 'nan@^2.0.5', [ 'nan@^2.0.5', null ] ]
+verbose parsed url { pathname: 'nan@^2.0.5',
+verbose parsed url   path: 'nan@^2.0.5',
+verbose parsed url   href: 'nan@^2.0.5' }
+silly cache add: name, spec, args [ 'nan', '^2.0.5', [ 'nan', '^2.0.5' ] ]
+verbose parsed url { pathname: '^2.0.5', path: '^2.0.5', href: '^2.0.5' }
+verbose addNamed [ 'nan', '^2.0.5' ]
+verbose addNamed [ null, null ]
+info addNameTag [ 'nan', '^2.0.5' ]
+verbose cache add [ 'nan@^2.0.5', null ]
+silly cache add: name, spec, args [ undefined, 'nan@^2.0.5', [ 'nan@^2.0.5', null ] ]
+verbose parsed url { pathname: 'nan@^2.0.5',
+verbose parsed url   path: 'nan@^2.0.5',
+verbose parsed url   href: 'nan@^2.0.5' }
+silly cache add: name, spec, args [ 'nan', '^2.0.5', [ 'nan', '^2.0.5' ] ]
+verbose parsed url { pathname: '^2.0.5', path: '^2.0.5', href: '^2.0.5' }
+verbose addNamed [ 'nan', '^2.0.5' ]
+info postinstall ultron@1.0.2
+verbose installOne cb ultron@1.0.2
+verbose raw, before any munging bindings
+verbose url resolving [ 'https://registry.npmjs.org/', './bindings' ]
+verbose url resolved https://registry.npmjs.org/bindings
+verbose etag "2RXG5K4RRQWEOOFOAOOKVPOZR"
+http GET https://registry.npmjs.org/bindings
+verbose cache add [ 'bindings@1.2.x', null ]
+silly cache add: name, spec, args [ undefined, 'bindings@1.2.x', [ 'bindings@1.2.x', null ] ]
+verbose parsed url { pathname: 'bindings@1.2.x',
+verbose parsed url   path: 'bindings@1.2.x',
+verbose parsed url   href: 'bindings@1.2.x' }
+silly cache add: name, spec, args [ 'bindings', '1.2.x', [ 'bindings', '1.2.x' ] ]
+verbose parsed url { pathname: '1.2.x', path: '1.2.x', href: '1.2.x' }
+verbose addNamed [ 'bindings', '1.2.x' ]
+verbose raw, before any munging nan
+verbose url resolving [ 'https://registry.npmjs.org/', './nan' ]
+verbose url resolved https://registry.npmjs.org/nan
+verbose etag "7CEDVJA24M9BXRU7SU6WRSW4M"
+http GET https://registry.npmjs.org/nan
+silly get cb [ 304, undefined ]
+verbose etag bindings from cache
+silly name, range, hasData 2 [ 'bindings', '>=1.2.0- <1.3.0-', true ]
+silly versions [ 'bindings',
+silly versions   [ '0.0.1',
+silly versions     '0.1.0',
+silly versions     '0.1.1',
+silly versions     '0.2.0',
+silly versions     '0.2.1',
+silly versions     '0.2.2',
+silly versions     '0.2.3',
+silly versions     '0.2.4',
+silly versions     '0.3.0',
+silly versions     '0.4.0',
+silly versions     '1.0.0',
+silly versions     '1.1.0',
+silly versions     '1.1.1',
+silly versions     '1.2.0',
+silly versions     '1.2.1' ] ]
+verbose bin dist [ '0.6-ares1.9.1-evundefined-openssl1.0.1c-v83.8.9.20-linux-arm-3.18.7-v7+',
+verbose bin dist   { shasum: '14ad6113812d2d37d72e67b4cacb4bb726505f11',
+verbose bin dist     tarball: 'http://registry.npmjs.org/bindings/-/bindings-1.2.1.tgz' } ]
+verbose caching /home/pi/.npm/bindings/1.2.1/package/package.json
+verbose loadDefaults bindings@1.2.1
+silly get cb [ 304, undefined ]
+verbose etag nan from cache
+verbose about to build /home/pi/jsmpeg-master/node_modules/ws/node_modules/utf-8-validate
+ERR! error installing utf-8-validate@1.2.1
+info unbuild /home/pi/jsmpeg-master/node_modules/ws/node_modules/utf-8-validate
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/node_modules/utf-8-validate/package.json
+info preuninstall utf-8-validate@1.2.1
+verbose about to build /home/pi/jsmpeg-master/node_modules/ws/node_modules/bufferutil
+ERR! error installing bufferutil@1.2.1
+info unbuild /home/pi/jsmpeg-master/node_modules/ws/node_modules/bufferutil
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/node_modules/bufferutil/package.json
+info preuninstall bufferutil@1.2.1
+info uninstall utf-8-validate@1.2.1
+info uninstall bufferutil@1.2.1
+verbose unbuild utf-8-validate@1.2.1 [ false,
+verbose unbuild utf-8-validate@1.2.1   '/home/pi/jsmpeg-master/node_modules',
+verbose unbuild utf-8-validate@1.2.1   '/home/pi/jsmpeg-master/node_modules/ws/node_modules' ]
+info postuninstall utf-8-validate@1.2.1
+verbose unbuild bufferutil@1.2.1 [ false,
+verbose unbuild bufferutil@1.2.1   '/home/pi/jsmpeg-master/node_modules',
+verbose unbuild bufferutil@1.2.1   '/home/pi/jsmpeg-master/node_modules/ws/node_modules' ]
+info postuninstall bufferutil@1.2.1
+verbose installOne cb utf-8-validate@1.2.1
+verbose about to build /home/pi/jsmpeg-master/node_modules/ws
+ERR! error installing ws@0.8.1
+info unbuild /home/pi/jsmpeg-master/node_modules/ws
+verbose from cache /home/pi/jsmpeg-master/node_modules/ws/package.json
+info preuninstall ws@0.8.1
+verbose installOne cb bufferutil@1.2.1
+info uninstall ws@0.8.1
+verbose unbuild ws@0.8.1 [ true,
+verbose unbuild ws@0.8.1   '/home/pi/jsmpeg-master/node_modules',
+verbose unbuild ws@0.8.1   '/home/pi/jsmpeg-master/node_modules' ]
+info postuninstall ws@0.8.1
+verbose installOne cb ws@0.8.1
+ERR! Error: No compatible version found: nan@'^2.0.5'
+ERR! Valid install targets:
+ERR! ["0.3.0-wip","0.3.0-wip2","0.3.0","0.3.1","0.3.2","0.4.0","0.4.1","0.4.2","0.4.3","0.4.4","0.5.0","0.5.1","0.5.2","0.6.0","0.7.0","0.7.1","0.8.0","1.0.0","1.1.0","1.1.1","1.1.2","1.2.0","1.3.0","1.4.0","1.4.1","1.5.0","1.4.2","1.4.3","1.5.1","1.5.2","1.6.0","1.5.3","1.6.1","1.6.2","1.7.0","1.8.0","1.8.1","1.8.2","1.8.3","1.8.4","1.9.0","2.0.0","2.0.1","2.0.2","2.0.3","2.0.4","2.0.5","2.0.6","2.0.7","2.0.8","2.0.9","2.1.0"]
+ERR!     at installTargetsError (/usr/share/npm/lib/cache.js:488:10)
+ERR!     at /usr/share/npm/lib/cache.js:375:15
+ERR!     at saved (/usr/share/npm/lib/utils/npm-registry-client/get.js:147:7)
+ERR!     at Object.oncomplete (/usr/lib/nodejs/graceful-fs.js:230:7)
+ERR! You may report this log at:
+ERR!     <http://bugs.debian.org/npm>
+ERR! or use
+ERR!     reportbug --attach /home/pi/jsmpeg-master/npm-debug.log npm
+ERR! 
+ERR! System Linux 3.18.7-v7+
+ERR! command "/usr/bin/nodejs" "/usr/bin/npm" "install" "ws"
+ERR! cwd /home/pi/jsmpeg-master
+ERR! node -v v0.6.19
+ERR! npm -v 1.1.4
+ERR! message No compatible version found: nan@'^2.0.5'
+ERR! message Valid install targets:
+ERR! message ["0.3.0-wip","0.3.0-wip2","0.3.0","0.3.1","0.3.2","0.4.0","0.4.1","0.4.2","0.4.3","0.4.4","0.5.0","0.5.1","0.5.2","0.6.0","0.7.0","0.7.1","0.8.0","1.0.0","1.1.0","1.1.1","1.1.2","1.2.0","1.3.0","1.4.0","1.4.1","1.5.0","1.4.2","1.4.3","1.5.1","1.5.2","1.6.0","1.5.3","1.6.1","1.6.2","1.7.0","1.8.0","1.8.1","1.8.2","1.8.3","1.8.4","1.9.0","2.0.0","2.0.1","2.0.2","2.0.3","2.0.4","2.0.5","2.0.6","2.0.7","2.0.8","2.0.9","2.1.0"]
+verbose exit [ 1, true ]

@@ -1,0 +1,12 @@
+
+#!/bin/sh
+#Check for running instance of process foo...
+#  If foo's not running, invoke process bar...
+P1="node"                    # name of process to be monitored
+P2="/usr/local/bin/node /home/pi/wifibot/jsmpeg-master/stream-server.js popo"      # path to process to be invoked if P1 isn't running
+C1=$(pgrep $P1)
+RC=$?   
+if [ "$RC" -ne 0 ];
+then
+   $P2 > /dev/null 2>&1 < /dev/null&
+fi

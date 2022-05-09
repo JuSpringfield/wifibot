@@ -1,0 +1,12 @@
+
+#!/bin/sh
+#Check for running instance of process foo...
+#  If foo's not running, invoke process bar...
+P1="ffmpeg"                    # name of process to be monitored
+P2="/home/pi/wifibot/ffmpeg/ffmpeg"      # path to process to be invoked if P1 isn't running
+C1=$(pgrep $P1)
+RC=$?   
+if [ "$RC" -ne 0 ];
+then
+   $P2 -s 640x480 -f video4linux2 -i /dev/video0 -f mpeg1video -b 1000k -r 20 http://127.0.0.1:8082/popo/640/480/ > /dev/null 2>&1 < /dev/null&
+fi
