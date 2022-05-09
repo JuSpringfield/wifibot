@@ -3,7 +3,7 @@
 #Check for running instance of process foo...
 #  If foo's not running, invoke process bar...
 P1="mjpg_streamer"                    # name of process to be monitored
-P2=" /home/pi/wifibot/mjpg-streamer/mjpg_streamer" # path to process to be invoked if P1 isn't running
+P2=" /home/$USER/wifibot/mjpg-streamer/mjpg_streamer" # path to process to be invoked if P1 isn't running
 C1=$(pgrep $P1)
 RC=$?   
 if [ "$RC" -ne 0 ];
