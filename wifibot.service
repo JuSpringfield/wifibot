@@ -1,0 +1,11 @@
+[Unit]
+Description=wifibot services
+
+[Service]
+ExecStart=/home/pi/wifibot/wifibot-init
+Type=oneshot
+RemainAfterExit=yes
+User=pi
+
+[Install]
+WantedBy=multi-user.target

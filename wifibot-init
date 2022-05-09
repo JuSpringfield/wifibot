@@ -1,0 +1,21 @@
+#! /bin/bash
+
+#sysctl -w net.ipv4.ip_forward=1
+#source /etc/wifibot.ini
+
+#sudo iptables -t nat -A PREROUTING -i ath0 -p tcp -d $robotwlanip --dport $camport1 -j DNAT --to $camip:$camport1
+#sudo iptables -t nat -A PREROUTING -i ath0 -p tcp -d $robotwlanip --dport $camport2 -j DNAT --to $camip:$camport2
+#sudo iptables -t nat -A PREROUTING -i ath0 -p udp -d $robotwlanip --dport $camport3 -j DNAT --to $camip:$camport3
+#sudo iptables -t nat -A PREROUTING -i ath0 -p udp -d $robotwlanip --dport $camport4 -j DNAT --to $camip:$camport4
+
+#sudo iptables -t nat -A PREROUTING -i ath0 -p tcp -d $robotwlanip --dport 4800 -j DNAT --to 192.168.0.33:4800
+#sudo iptables -t nat -A PREROUTING -i ath0 -p tcp -d $robotwlanip --dport 966 -j DNAT --to 192.168.0.33:966
+#sudo iptables -t nat -A PREROUTING -i ath0 -p udp -d $robotwlanip --dport 950 -j DNAT --to 192.168.0.33:950
+
+#sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+#sleep 10
+/usr/sbin/./robot_server_run 0&
+sleep 1
+/usr/sbin/./start_mjpg&
+sleep 1
+/usr/sbin/./websock_wifibot&

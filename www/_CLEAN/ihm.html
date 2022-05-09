@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Wifibot</title>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/custom.css" rel="stylesheet">
+	</head>
+	<body>
+		<br />
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel with-nav-tabs panel-default">
+						<div class="panel-heading">
+							<ul class="nav nav-tabs">
+								<li class="active"><a href="#tab1default" data-toggle="tab"><span id="connection_icon">&nbsp;</span> My Wifibot</a></li>
+								<li><a href="#gps" data-toggle="tab">GPS</a></li>
+								<li><a href="#tab2default" data-toggle="tab">Settings</a></li>
+							</ul>
+						</div>
+						<div class="panel-body">
+							<div class="tab-content">
+								<div class="tab-pane fade in active" id="tab1default">
+									<div id="tab1_up"></div>
+									<div id="tab1_low">
+										<div id="ffmpeg_1" class="img-responsive" style="width: 640px; margin: 0 auto; position: relative; border: 3px solid #777;">
+											<div class="bl lidar"></div>
+											<div class="tl lidar lidar_3"></div>
+											<div class="br lidar lidar_2"></div>
+											<div class="tr lidar lidar_2 lidar_3"></div>
+											<div id="ffmpeg_canvas"><canvas class="img-responsive" id="videoCanvas" width="640" height="480" style="margin: 0 auto;"></canvas></div>
+										</div>
+										<br />
+										<div id="dashboard">
+											<div class="row">
+												<div id="dashboard_manette" style="float: none; margin: 0 auto;" class="col-lg-6 col-md-7">
+													<canvas id="gauge1" width="150" height="150" data-type="canv-gauge" data-value="0"
+														data-title="Battery" data-min-value="0" data-max-value="20" data-major-ticks="0 5 10 15 20"
+														data-minor-ticks="2" data-stroke-ticks="true" data-units="Volt (V)" data-value-format="2.2"
+														data-glow="true" data-animation-delay="10" data-animation-duration="200"
+														data-animation-fn="bounce" data-colors-needle="#f00 #00f" data-highlights="0 5 #ff0000, 5 10 #FFA500, 10 15 #ffff00, 15 20 #00ff00"></canvas>
+													<canvas id="gauge2" width="150" height="150" data-type="canv-gauge"
+														data-title="Speed" data-min-value="0" data-max-value="2" data-major-ticks="0 0.25 0.5 0.75 1 1.5 1.75 2"
+														data-minor-ticks="2" data-stroke-ticks="true" data-units="m/s" data-value-format="1.2"
+														data-glow="true" data-animation-delay="10" data-animation-duration="200"
+														data-animation-fn="bounce" data-colors-needle="#f00 #00f"></canvas>
+													<div style="background-color: #e2e2e2; border-top: 1px solid #a5a5a5;">
+														<button id="control_btn" class="btn btn-xs btn-success" style="vertical-align: 50%; z-index: 21; position: relative; min-width: 60px">Control</button> <canvas id="display_odometry_left" width="120" height="30" style="background-color: #E2E2E2; padding: 0 10px;"></canvas><canvas id="display_intensite" width="90" height="28" style="background-color: #E2E2E2; padding: 0 10px;"></canvas><canvas id="display_odometry_right" width="120" height="30" style="background-color: #E2E2E2; padding: 0 10px;"></canvas> <button class="btn btn-xs btn-default" style="vertical-align: 50%; z-index: 21; position: relative; min-width: 60px">F1</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<img id="joystick_img_out" src="imgs/pointer_in.png" style="position: absolute; display: none; z-index: 10">
+										<img id="joystick_img_in" src="imgs/pointer_out.png" style="position: absolute; display: none; z-index: 10">
+									</div>
+								</div>
+								<div class="tab-pane fade" id="gps">
+									<button id="trace_map" class="btn btn-primary">Disable trace</button> <button id="reset_trace_map" class="btn btn-primary">Reset trace</button> <button id="recenter_map" class="btn btn-primary">Recenter</button> <button id="follow_map" class="btn btn-primary">Unfollow my Wifibot</button>
+									<hr style="margin-top: 15px">
+									<div style="position: relative;">
+										<div id="ffmpeg_2" class="img-responsive" style="right: 0px; width: 300px; margin: 0 auto; position: absolute; z-index: 20; border: 3px solid #777;">
+											<div class="bl lidar lidar_little"></div>
+											<div class="tl lidar lidar_3 lidar_little"></div>
+											<div class="br lidar lidar_2 lidar_little"></div>
+											<div class="tr lidar lidar_2 lidar_3 lidar_little"></div>
+										</div>
+										<div id="map" style="width:100%;height:600px"></div>
+									</div>
+								</div>
+								<div class="tab-pane fade" id="tab2default">
+									<form>
+										<div class="form-group">
+											<label>IP address and port number of the server:</label>
+											<input type="text" class="form-control" id="ip_and_port_server">
+										</div>
+										<div class="form-group">
+											<label>IP address and port number of the FFmpeg camera:</label>
+											<input type="text" class="form-control" id="ip_and_port_ffmpeg">
+										</div>
+										<div class="form-group">
+											<label>IP address and port number of the GPS socket:</label>
+											<input type="text" class="form-control" id="ip_and_port_gps">
+										</div>
+										<div class="form-group">
+											<label>Enable GPS mapping:</label>
+											<select id="enable_gps_mapping" class="form-control">
+												<option>Yes</option>
+												<option>No</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label>Enable sensors:</label>
+											<select id="enable_sensors" class="form-control">
+												<option>Yes</option>
+												<option>No</option>
+											</select>
+										</div>
+									</form>
+									<button id="update_config" class="btn btn-primary btn-block">Update</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<canvas id="gauge" style="display: none;"></canvas>
+
+		<!-- External libs, please don't edit those files -->
+		<script type="text/javascript" src="js/libs/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="js/libs/jquery.cookie.js"></script>
+		<script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/libs/gauge.min.js"></script>
+		<script type="text/javascript" src="js/libs/jsmpg.js"></script>
+		<script type="text/javascript" src="js/libs/excanvas.js"></script>
+		<script type="text/javascript" src="js/libs/segment-display.js"></script>
+		<script type="text/javascript" src="js/libs/socketio.js"></script>
+
+		<!-- JS scripts developed for Wifibot, feel free to update those files or create a new one. -->
+		<script type="text/javascript" src="js/basics.js"></script>
+		<script type="text/javascript" src="js/segment_display.js"></script>
+		<script type="text/javascript" src="js/gps.js"></script>
+		<script type="text/javascript" src="js/settings.js"></script>
+		<script type="text/javascript" src="js/sensors.js"></script>
+		<script type="text/javascript" src="js/websocket.js"></script>
+		<script type="text/javascript" src="js/buttons.js"></script>
+		<script type="text/javascript" src="js/virtual_joystick.js"></script>
+		<script type="text/javascript" src="js/physical_joystick.js"></script>
+	</body>
+</html>
+

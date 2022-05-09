@@ -1,0 +1,276 @@
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+		body {
+			overflow	: hidden; 
+			padding		: 0;
+			margin		: 0;
+			background-color: #BBB;
+		}
+		#info {
+			position	: absolute;
+			top		: 0px;
+			width		: 100%;
+			padding		: 5px;
+			text-align	: center;
+		}
+		#info a {
+			color		: #66F;
+			text-decoration	: none;
+		}
+		#info a:hover {
+			text-decoration	: underline;
+		}
+		#container {
+			width		: 100%;
+			height		: 100%;
+			overflow	: hidden;
+			padding		: 0;
+			margin		: 0;
+			-webkit-user-select	: none;
+			-moz-user-select	: none;
+		}
+		</style>
+  </head>
+  <body>
+  
+  <div style="position: relative;" id="container"><canvas style="position: absolute; left: 1414px; top: 517px; display: none;"
+        height="126" width="126"></canvas><canvas style="position: absolute; left: 1379px; top: 400px; display: none;"
+        height="86" width="86"></canvas></div>
+     <div id="info"> 
+		
+	<canvas id="gauge1" width="100" height="100" data-type="canv-gauge"
+        data-title="Speed" data-min-value="0" data-max-value="220" data-major-ticks="0 20 40 60 80 100 120 140 160 180 200 220"
+        data-minor-ticks="2" data-stroke-ticks="true" data-units="Km/h" data-value-format="3.2"
+        data-glow="true" data-animation-delay="10" data-animation-duration="200"
+        data-animation-fn="bounce" data-colors-needle="#f00 #00f" data-highlights="0 30 #eee, 30 60 #ccc, 60 90 #aaa, 90 220 #eaa"
+        data-onready="setInterval( function() { Gauge.Collection.get('gauge1').setValue( Math.random() * 220);}, 1000);"></canvas>
+    
+	<canvas width="100" height="100" data-type="canv-gauge" data-value="17.34"></canvas> 
+	
+	<canvas width="100"    height="100" data-type="canv-gauge" data-title="Hip-Hop" data-onready="setInterval( function() { Gauge.Collection[2].setValue( Math.random() * 100);}, 1000);"></canvas>
+	
+      <canvas width="100" height="100" data-type="canv-gauge" data-title="Negative Values"
+        data-min-value="-50" data-max-value="50" data-onready="setInterval( function() { Gauge.Collection[3].setValue( (Math.random()*100) -50 );}, 1000);"></canvas>
+      <canvas id="gauge"></canvas>
+
+      <p><br>
+        Touch the screen and move - works with mouse too as debug <br>
+        <span id="result"><b>Result:</b> dx:0 dy:0</span></p>
+    </div>
+    <p>
+      <script src="jquery.min.js"></script>
+      <script src="sprintf.js"></script>
+      <script src="virtualjoystick.js"></script>
+      <script src="gauge.min.js"></script> </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp; </p>
+    <script> 
+		
+			var iosocket;
+			var conok=0;
+			var output;			
+			
+			var joystick	= new VirtualJoystick({
+				container	: document.getElementById('container'),
+				mouseSupport	: true
+			});
+			
+			var gauge = new Gauge({
+		renderTo    : 'gauge',
+		width       : 100,
+		height      : 100,
+		glow        : true,
+		units       : 'Km/h',
+		title       : false,
+		minValue    : 0,
+		maxValue    : 220,
+		majorTicks  : ['0','20','40','60','80','100','120','140','160','180','200','220'],
+		minorTicks  : 2,
+		strokeTicks : false,
+		highlights  : [
+			{ from : 0,   to : 50, color : 'rgba(0,   255, 0, .15)' },
+			{ from : 50, to : 100, color : 'rgba(255, 255, 0, .15)' },
+			{ from : 100, to : 150, color : 'rgba(255, 30,  0, .25)' },
+			{ from : 150, to : 200, color : 'rgba(255, 0,  225, .25)' },
+			{ from : 200, to : 220, color : 'rgba(0, 0,  255, .25)' }
+		],
+		colors      : {
+			plate      : '#222',
+			majorTicks : '#f5f5f5',
+			minorTicks : '#ddd',
+			title      : '#fff',
+			units      : '#ccc',
+			numbers    : '#eee',
+			needle     : { start : 'rgba(240, 128, 128, 1)', end : 'rgba(255, 160, 122, .9)' }
+		}
+	});
+	
+	
+			
+function initWebSocket()
+  {
+    
+	//window.WebSocket = window.WebSocket || window.MozWebSocket;
+	websocket = new WebSocket('ws://192.168.1.34:7681');
+	websocket.binaryType = 'arraybuffer';
+	//websocket.onopen = function() {  
+    //console.log("Socket has been opened!");  
+	//conok=1;
+	
+	//websocket = new WebSocket(wsUri);
+	//websocket.binaryType = 'arraybuffer';
+    websocket.onopen = function(evt) { onOpen(evt) };
+    websocket.onclose = function(evt) { onClose(evt) };
+    websocket.onmessage = function(evt) { onMessage(evt) };
+    websocket.onerror = function(evt) { onError(evt) };
+	
+	
+	
+  }
+			
+function writeToScreen(message)
+  {
+    var pre = document.createElement("container");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = message;
+    output.appendChild(pre);
+  }
+					
+	$(function()
+	{
+	 output = document.getElementById("container");
+	//window.WebSocket = window.WebSocket || window.MozWebSocket;
+ 
+	//websocket = new WebSocket('ws://192.168.1.106:7681');
+	//websocket.binaryType = 'arraybuffer';
+
+
+	//websocket.onopen = function(evt) { onOpen(evt) };
+    //websocket.onclose = function(evt) { onClose(evt) };
+    //websocket.onmessage = function(evt) { onMessage(evt) };
+    //websocket.onerror = function(evt) { onError(evt) };
+	  
+        });
+
+	function onOpen(evt)
+  {
+    writeToScreen("CONNECTED");
+	conok=1;
+   }
+  
+  function onClose(evt)
+  {
+    writeToScreen("DISCONNECTED");
+	conok=0;
+//	initWebSocket();
+  
+}
+
+  function onMessage(evt)
+  {
+    //writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+	//writeToScreen('<span style="color: blue;">Bin: ' + evt.data+'</span>');
+	
+  var data = evt.data;
+  var dv = new DataView(data);
+  var width = dv.getInt32(0);
+  var height = dv.getInt32(4);
+  var format = 0;//getPixelFormat(dv);
+  var len = 0;//dv.getUint32(20);
+  //writeToScreen('<span style="color: blue;">Bin: ' + width+'</span>');
+  //writeToScreen('<span style="color: blue;">Bin: ' + height+'</span>');
+  
+  console.log('We have width: ' + width +
+      'px, height: ' +
+      height + 'px, name length: ' + len);
+	//websocket.send(arr);
+	//websocket.close();
+  }
+
+  function onError(evt)
+  {
+    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+  }
+
+  function doSend(message)
+  {
+  }
+  
+  setTimeout(function(){
+  
+   initWebSocket();
+   showGauge();
+   
+  },1000);
+
+	//		console.log("touchscreen is", VirtualJoystick.touchScreenAvailable() ? "available" : "not available");
+			
+			
+			
+			setInterval(function(){
+				//console.log('coucou');
+			
+				var mybuf = sprintf("%s %s",joystick.deltaX(),joystick.deltaY());
+				
+
+
+if (conok==1) {		
+					arr = new ArrayBuffer(8); // an Int32 takes 4 bytes
+					view = new DataView(arr);
+				//	view.setInt16(0, -12, false); // byteOffset = 0; litteEndian = false
+				//	view.setInt16(2, -489, false); // byteOffset = 0; litteEndian = false
+					view.setInt16(0, joystick.deltaX(), false); // byteOffset = 0; litteEndian = false
+					view.setInt16(2, joystick.deltaY(), false); // byteOffset = 0; litteEndian = false
+					view.setInt16(4, joystick.deltaX(), false); // byteOffset = 0; litteEndian = false
+					view.setInt16(6, joystick.deltaY(), false); // byteOffset = 0; litteEndian = false
+					
+					websocket.send(arr);
+					//websocket.send(mybuf);
+					console.log(mybuf);
+				}
+			
+				var outputEl	= document.getElementById('result');
+				outputEl.innerHTML	= '<b>Result:</b> '
+					+ ' dx:'+joystick.deltaX()
+					+ ' dy:'+joystick.deltaY()
+					+ (joystick.right()	? ' right'	: '')
+					+ (joystick.up()	? ' up'		: '')
+					+ (joystick.left()	? ' left'	: '')
+					+ (joystick.down()	? ' down' 	: '');		
+
+			}, 1/30 * 2000);
+			
+function showGauge() {
+
+gauge.onready = function() {
+		setInterval( function() {
+			gauge.setValue( Math.random() * 220);
+		}, 1000);
+		
+	};
+
+	gauge.draw();
+
+	
+	
+/*window.onresize= function() {
+	gauge.updateConfig({
+		width  : document.body.offsetWidth,
+		height : document.body.offsetHeight
+	});
+};*/
+//};
+
+};
+			
+		  </script>
+  </body>
+</html>

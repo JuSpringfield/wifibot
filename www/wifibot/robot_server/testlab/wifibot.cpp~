@@ -1,0 +1,434 @@
+#include "wifibot.h"
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+int Data_Of_Thread_In = 1;            // Data of Thread 1
+char buffso_rcv[32]; 
+char buffso_send[15];
+
+HANDLE Handle_Of_Thread_TCP=0;
+
+//Trooper
+int servermode = 0;
+int watchdog = 0;
+int cycles = 0;
+unsigned char speed1 = 0;
+unsigned char speed2 = 0;
+
+char buffso_rcvIN[100]; 
+char buffso_rcvOUT[100]; 
+char buffso_sendIN[100];
+char buffso_sendOUT[100];
+char buffer_address[sizeof(struct sockaddr)] = "0.0.0.0";
+char buffer_localip[sizeof(struct sockaddr)] = "0.0.0.0";
+
+HANDLE Handle_Of_Thread_TCP_trooper_In=0;
+HANDLE Handle_Of_Thread_TCP_trooper_Out=0;
+HANDLE Handle_Of_Thread_TCP_trooper_I2C=0;
+HANDLE Handle_Of_Thread_Dog=0;
+HANDLE Handle_Of_Thread_TCP_I2C_Simu=0;
+Mutex mutexSend;
+Mutex mutexRcv;
+bool tcpon=false;
+SensorData dataL;
+SensorData dataR;
+
+HANDLE SetupI2CCommPort( LPCSTR comport)
+{
+	HANDLE hCom;
+	DCB dcb;
+	COMMTIMEOUTS ct;
+
+	//if (!hCom) CloseHandle(hCom);
+	hCom = CreateFileA( comport, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, 0, 0);
+	GetCommState(hCom, &dcb);
+	dcb.BaudRate = CBR_19200;
+	dcb.fParity = FALSE;
+	dcb.fOutxCtsFlow = FALSE;
+	dcb.fOutxDsrFlow = FALSE;
+	dcb.fDtrControl = DTR_CONTROL_DISABLE;
+	dcb.fDsrSensitivity = FALSE;
+	dcb.fOutX = FALSE;
+	dcb.fInX = FALSE;
+	dcb.fRtsControl = RTS_CONTROL_DISABLE;
+	dcb.fAbortOnError = FALSE;
+	dcb.ByteSize = 8;
+	dcb.Parity = NOPARITY;
+	dcb.StopBits = TWOSTOPBITS;
+	SetCommState(hCom, &dcb);
+  
+	GetCommTimeouts(hCom, &ct);
+	ct.ReadIntervalTimeout = 500;
+    ct.ReadTotalTimeoutMultiplier =500; 
+    ct.ReadTotalTimeoutConstant = 500; 
+	SetCommTimeouts(hCom, &ct);
+
+	SetCommMask(hCom, EV_RXCHAR);
+	return hCom;
+}
+
+int GetFirmware(HANDLE hUSB)
+{
+	BYTE sbuf[100];
+	DWORD n;
+
+	sbuf[0] = USBI2C_CMD;			// send nodule command			
+	sbuf[1] = VERSION;				// send read version command
+	sbuf[2] = 0x00;
+	sbuf[3] = 0x00;
+	WriteFile(hUSB, &sbuf, 4, &n, NULL);
+    ReadFile(hUSB, &sbuf, 1, &n, NULL);
+		
+	if(sbuf[0]>20) {
+		#ifdef debug_msg
+		printf(" No USB-I2C Module Found \n");
+		#endif
+		return -1;
+	}
+	else {
+			#ifdef debug_msg
+			printf("Firmware Ver %i\n", sbuf[0]);
+			#endif
+			return sbuf[0];
+		}
+
+}
+
+struct SensorData GetI2cMotor(HANDLE hUSB, BYTE add)
+{	    
+	DWORD n;
+	BYTE sbuf[100];
+	struct SensorData data;
+
+	sbuf[0] = I2C_CMD;			// send command
+	sbuf[1] = add+1;
+	sbuf[2] = 0x00;
+	sbuf[3] = 0x08;
+	WriteFile(hUSB, &sbuf, 4, &n, NULL);
+	ReadFile(hUSB, &sbuf, 8, &n, NULL);
+	data.SpeedFront=sbuf[0];
+	data.SpeedRear=sbuf[1];
+	data.IR=sbuf[2];
+	data.IR2=sbuf[3];
+    data.odometry=((((long)sbuf[7] << 24))+(((long)sbuf[6] << 16))+(((long)sbuf[5] << 8))+((long)sbuf[4]));
+	return data;
+}
+int SetI2cMotor(HANDLE hUSB, BYTE add,BYTE speed)
+{
+	DWORD n;
+	BYTE sbuf[100];
+
+	sbuf[0] = I2C_CMD;			
+	sbuf[1] = add;
+	sbuf[2] = 0x00;
+	sbuf[3] = 0x01;
+	sbuf[4] = speed;
+	WriteFile(hUSB, &sbuf, 5, &n, NULL);
+	ReadFile(hUSB, &sbuf, 1, &n, NULL);
+	return sbuf[0];
+}
+
+int GetADC(HANDLE hUSB, BYTE add)
+{
+	DWORD n;
+	BYTE sbuf[100];
+
+	sbuf[0] = I2C_CMD;			
+	sbuf[1] = add;
+	sbuf[2] = 0x00;
+	sbuf[3] = 0x02;
+	sbuf[4] = 0x40;
+	sbuf[5] = 250;
+	WriteFile(hUSB, &sbuf, 6, &n, NULL);
+	ReadFile(hUSB, &sbuf, 1, &n, NULL);
+	
+	sbuf[0] = I2C_CMD;		
+	sbuf[1] = add+1;
+	sbuf[2] = 0x00;
+	sbuf[3] = 0x01;
+	WriteFile(hUSB, &sbuf, 4, &n, NULL);
+	ReadFile(hUSB, &sbuf, 1, &n, NULL);
+	return sbuf[0];	
+}
+int stop(HANDLE hUSB)
+{
+	SetI2cMotor(hUSB,0xA2,0x00);
+	SetI2cMotor(hUSB,0xA4,0x00);
+	return 0;
+}
+
+DWORD WINAPI Thread_TCP( LPVOID lpParam ) 
+{
+	WSADATA wsa;
+    SOCKET sock;
+    SOCKADDR_IN sin;
+    int dataLen;
+    int sinsize;
+	int recvMsgSize=0;
+
+	HANDLE hUSB = (HANDLE*)lpParam;
+	
+    //Initialisation du serveur
+	WSAStartup(MAKEWORD(2,2),&wsa);
+    //Création du socket
+	sock=socket(PF_INET,SOCK_STREAM,0);
+    sin.sin_family=AF_INET;
+	//Lancement du bind
+	sin.sin_port=htons((unsigned short)15020);
+    sin.sin_addr.s_addr=INADDR_ANY;
+    bind(sock,(SOCKADDR*)&sin,sizeof(sin));
+	sinsize=sizeof(sin);
+    printf("go \n");
+	while(1)
+	{
+		listen(sock,1);
+		SOCKET hAccept = accept(sock, NULL, NULL);
+		printf("client tcp ok \n");
+		Sleep(500);
+
+	do{
+
+			if ((recvMsgSize = recv(hAccept, (char*)buffso_rcv, 2, 0)) < 1) shutdown(hAccept,1);
+	
+			//  mutexSend.acquire();
+			speed1=buffso_rcv[0];
+			speed2=buffso_rcv[1];
+			//mutexSend.release();
+			watchdog = 0;
+	 	    cycles = 3;
+			//mutexRcv.acquire();
+	   		send(hAccept,buffso_send,15,0);
+			//mutexRcv.acquire();
+	   
+		}while(recvMsgSize>0);
+	  }
+return 0;
+}
+
+DWORD WINAPI Thread_Dog( LPVOID lpParam ) 
+{
+	while (1) {
+		if(watchdog < cycles) watchdog = watchdog + 1;
+	else if(watchdog == cycles)
+	{
+		speed1 = 0;
+		speed2 = 0;
+	}//end of else if watchdog
+Sleep(200);
+	}
+	return 0;
+}
+
+DWORD WINAPI Thread_TCP_Trooper_In( LPVOID lpParam ) 
+{
+	WSADATA wsa;
+    SOCKET sock;
+    SOCKADDR_IN sin;
+    int dataLen;
+    int sinsize;
+	
+	HANDLE hUSB = (HANDLE*)lpParam;
+	
+    //Initialisation du serveur
+	WSAStartup(MAKEWORD(2,2),&wsa);
+	//Création du socket
+	sock=socket(AF_INET,SOCK_DGRAM,0);
+    sin.sin_family=AF_INET;
+	//Lancement du bind
+	sin.sin_port=htons((unsigned short)15000);
+    sin.sin_addr.s_addr=INADDR_ANY;
+    bind(sock,(SOCKADDR*)&sin,sizeof(sin));
+	sinsize=sizeof(sin);
+
+while(1)
+{    
+	//We wait for the client to send "init" and send "ok" in return
+	dataLen = recvfrom(sock, buffso_rcvIN, 20,0,(SOCKADDR*)&sin, &sinsize);
+
+    if(!(strstr(buffso_rcvIN,"init")==NULL))
+    {
+     sprintf(buffso_sendIN,"ok");
+	 dataLen = sendto(sock,buffso_sendIN,3,0,(SOCKADDR*)&sin,sizeof(sin));
+	printf("client udp ok %d \n",dataLen);
+	}
+    else if(!(strstr(buffso_rcvIN,"speed")==NULL))
+    {
+     watchdog = 0;
+	 mutexSend.acquire();
+	 speed2 = buffso_rcvIN[6];
+     speed1 = buffso_rcvIN[8];
+	 mutexSend.release();
+	 //printf("speed1 %d speed2 %d steer1 %d steer2 %d \n",buffso_rcvIN[5],buffso_rcvIN[6],buffso_rcvIN[7],buffso_rcvIN[8]);
+	#ifdef debug_msg 
+//	printf("speed1 %d speed2 %d \n",speed1,speed2);
+	#endif
+	 
+	cycles = 3;
+    servermode = 0;
+	}//end of else if
+
+}//end of main loop 
+
+	return 0;
+}
+
+DWORD WINAPI Thread_TCP_Trooper_Out( LPVOID lpParam ) 
+{
+	char ac[80];
+    struct in_addr addr;
+    struct hostent *phe;
+
+	WSADATA wsa;
+    SOCKET sock;
+    SOCKADDR_IN sin;
+    int dataLen;
+    int sinsize;
+    
+	//Initialisation du serveur
+	WSAStartup(MAKEWORD(2,2),&wsa);
+    //Création du socket
+	sock=socket(AF_INET,SOCK_DGRAM,0);
+    sin.sin_family=AF_INET;
+	//Lancement du bind
+    sin.sin_port=htons((unsigned short)15010);
+    sin.sin_addr.s_addr=INADDR_ANY;
+    bind(sock,(SOCKADDR*)&sin,sizeof(sin));
+	sinsize=sizeof(sin);
+	HANDLE hUSB = (HANDLE*)lpParam;
+		
+while(1)
+{	
+	//We wait for the client to send "init" and send "ok" in return
+	dataLen = recvfrom(sock, buffso_rcvOUT, 20,0,(SOCKADDR*)&sin, &sinsize);
+	if(!(strstr(buffso_rcvOUT,"init")==NULL))
+    {
+      sprintf(buffso_sendOUT,"ok");
+      dataLen = sendto(sock,buffso_sendOUT,3,0,(SOCKADDR*)&sin,sizeof(sin));
+    }
+    else if(!(strstr(buffso_rcvOUT,"data")==NULL))
+	{  
+       //We look if the reference address has changed
+      if(strstr(buffso_rcvOUT,buffer_address)==NULL)
+      {
+       //We get the new reference address
+       CopyMemory(buffer_address,buffso_rcvOUT+5*sizeof(char),15*sizeof(char));
+       //printf("address: %s\n",buffer_address);
+      }//enf of if address
+      
+	  //We get our IP address
+      if (gethostname(ac, sizeof(ac)) != SOCKET_ERROR)
+	  {
+	    phe = gethostbyname(ac);
+	    if (phe!=0) memcpy(&addr, phe->h_addr_list[0], sizeof(struct in_addr));
+	    sprintf(buffer_localip,"%d.%d.%d.%d",addr.S_un.S_un_b.s_b1,addr.S_un.S_un_b.s_b2,addr.S_un.S_un_b.s_b3,addr.S_un.S_un_b.s_b4);
+	  }
+	  CopyMemory(buffso_sendOUT+5*sizeof(char),buffer_localip,15*sizeof(char));
+
+	  mutexRcv.acquire();
+	  dataLen = sendto(sock,buffso_sendOUT,100,0,(SOCKADDR*)&sin,sizeof(sin));//
+	  mutexRcv.release();
+	  }//end of else if
+
+}//end of main loop
+
+	return 0;
+}
+
+DWORD WINAPI Thread_TCP_Trooper_I2C( LPVOID lpParam ) 
+{
+	HANDLE hUSB = (HANDLE*)lpParam;
+	
+	SetI2cMotor(hUSB,0xA2,0x00);
+	SetI2cMotor(hUSB,0xA4,0x00);
+	speed1=0;speed2=0;	
+	while(1)
+	{
+		#ifdef debug_msg 
+			printf("speed1 %d speed2 %d\n",speed1,speed2);
+		#endif
+		mutexSend.acquire();
+		int res = SetI2cMotor(hUSB,0xA2,speed1);
+	    dataL = GetI2cMotor(hUSB,0xA2);
+	    res = SetI2cMotor(hUSB,0xA4,speed2);
+		dataR = GetI2cMotor(hUSB,0xA4);
+		mutexSend.release();
+	    //We prepare the data to be sent to the user
+	   mutexRcv.acquire();	  
+	   buffso_sendOUT[0] = dataL.SpeedRear;//+20 or (unsigned char)(strIN[6]-155);
+	   buffso_sendOUT[1] = dataR.SpeedFront+(speed2&0x40);
+	   buffso_sendOUT[2] = dataL.SpeedFront+(speed1&0x40);
+   
+	   buffso_sendOUT[93] = dataL.SpeedRear+20;
+	   buffso_sendOUT[94] = dataL.SpeedFront;
+	   buffso_sendOUT[95] = dataL.SpeedFront;
+	   buffso_sendOUT[96] = dataR.SpeedFront;
+	   buffso_sendOUT[97] = dataR.SpeedFront;
+	   buffso_sendOUT[98] = dataL.IR;
+	   buffso_sendOUT[99] = dataR.IR;
+
+	   buffso_send[0]=dataL.SpeedRear+20;//GetADC(hUSB,0x48);
+	   buffso_send[1]=dataL.SpeedFront;
+	   buffso_send[2]=dataL.SpeedFront;
+	   buffso_send[3]=dataR.SpeedFront;
+	   buffso_send[4]=dataR.SpeedFront;
+	   buffso_send[5]=dataL.IR;
+	   buffso_send[6]=dataR.IR;
+	   buffso_send[7]=dataL.odometry;
+	   buffso_send[8]=dataL.odometry >> 8;
+	   buffso_send[9]=dataL.odometry >> 16;
+	   buffso_send[10]=dataL.odometry >> 24;
+	   buffso_send[11]=(char)dataR.odometry;
+	   buffso_send[12]=(char)(dataR.odometry >> 8);
+	   buffso_send[13]=(char)(dataR.odometry >> 16);
+	   buffso_send[14]=(char)(dataR.odometry >> 24);
+	   mutexRcv.release();      
+	   Sleep(100);
+	}
+}
+
+DWORD WINAPI Thread_TCP_I2C_Simu( LPVOID lpParam ) 
+{
+	HANDLE hUSB = (HANDLE*)lpParam;
+	while(1)
+	{
+	Sleep(1000);
+	}
+return 0;
+}
+
+int init_tcp_com(HANDLE hUSB)
+{	
+	Handle_Of_Thread_TCP_trooper_I2C = CreateThread( NULL, 0, Thread_TCP_Trooper_I2C, hUSB, 0, NULL);  
+	if ( Handle_Of_Thread_TCP_trooper_I2C == NULL)  ExitProcess(Data_Of_Thread_In);
+
+	Handle_Of_Thread_TCP = CreateThread( NULL, 0, Thread_TCP, &hUSB, 0, NULL);  
+	if ( Handle_Of_Thread_TCP == NULL)  ExitProcess(Data_Of_Thread_In);
+
+	Handle_Of_Thread_Dog = CreateThread( NULL, 0, Thread_Dog, &hUSB, 0, NULL);  
+	if ( Handle_Of_Thread_Dog == NULL)  ExitProcess(Data_Of_Thread_In);
+
+	return 1;	
+}
+
+int init_tcp_Trooper_com(HANDLE hUSB)
+{
+	Handle_Of_Thread_TCP_trooper_In = CreateThread( NULL, 0, Thread_TCP_Trooper_In, &hUSB, 0, NULL);  
+	if ( Handle_Of_Thread_TCP_trooper_In == NULL)  ExitProcess(Data_Of_Thread_In);
+
+	Handle_Of_Thread_TCP_trooper_Out = CreateThread( NULL, 0, Thread_TCP_Trooper_Out, &hUSB, 0, NULL);  
+	if ( Handle_Of_Thread_TCP_trooper_Out == NULL)  ExitProcess(Data_Of_Thread_In);
+	
+	return 1;	
+}
+
+int init_I2C_USB(HANDLE hUSB)
+{
+	Handle_Of_Thread_TCP_trooper_I2C = CreateThread( NULL, 0, Thread_TCP_Trooper_I2C, hUSB, 0, NULL);  
+	if ( Handle_Of_Thread_TCP_trooper_I2C == NULL)  ExitProcess(Data_Of_Thread_In);
+}
+
+int init_I2C_Simu(HANDLE hUSB)
+{
+	Handle_Of_Thread_TCP_I2C_Simu = CreateThread( NULL, 0, Thread_TCP_I2C_Simu, hUSB, 0, NULL);  
+	if ( Handle_Of_Thread_TCP_I2C_Simu == NULL)  ExitProcess(Data_Of_Thread_In);
+}

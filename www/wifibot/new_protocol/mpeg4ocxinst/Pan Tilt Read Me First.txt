@@ -1,0 +1,4 @@
+Before using the wifibotgui pan-tilt program for the first time on a computer
+,you have to install the Pan Tilt decoder by double clicking on it.
+
+For uninstalling the decoder double click on the Uninstall program. 

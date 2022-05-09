@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Wifibot</title>
+		<link href="bootstrap.min.css" rel="stylesheet">
+		<style>
+			body, .panel-body
+			{
+				background-color: black;
+				color: white;
+				overflow-y:hidden;
+			}
+			.panel.with-nav-tabs .panel-heading{
+			padding: 5px 5px 0 5px;
+			}
+			.panel.with-nav-tabs .nav-tabs{
+			border-bottom: none;
+			}
+			.panel.with-nav-tabs .nav-justified{
+			margin-bottom: -1px;
+			}
+			.with-nav-tabs.panel-default .nav-tabs > li > a,
+			.with-nav-tabs.panel-default .nav-tabs > li > a:hover,
+			.with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+			color: #777;
+			}
+			.with-nav-tabs.panel-default .nav-tabs > .open > a,
+			.with-nav-tabs.panel-default .nav-tabs > .open > a:hover,
+			.with-nav-tabs.panel-default .nav-tabs > .open > a:focus,
+			.with-nav-tabs.panel-default .nav-tabs > li > a:hover,
+			.with-nav-tabs.panel-default .nav-tabs > li > a:focus {
+			color: #777;
+			background-color: #ddd;
+			border-color: transparent;
+			}
+			.with-nav-tabs.panel-default .nav-tabs > li.active > a,
+			.with-nav-tabs.panel-default .nav-tabs > li.active > a:hover,
+			.with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
+			color: #555;
+			background-color: #fff;
+			border-color: #ddd;
+			border-bottom-color: transparent;
+			}
+			.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu {
+			background-color: #f5f5f5;
+			border-color: #ddd;
+			}
+			.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a {
+			color: #777;   
+			}
+			.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+			.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+			background-color: #ddd;
+			}
+			.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+			.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+			.with-nav-tabs.panel-default .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+			color: #fff;
+			background-color: #555;
+			}
+			#tab1default
+			{
+			position: relative;
+			}
+			.panel-default
+			{
+			border-width: 3px;
+			}
+			#tab1_up
+			{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			z-index: 20;
+			top: 0;
+			left: 0;
+			}
+			#tab1_low
+			{
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			}
+			#dashboard
+			{
+			position: relative;
+			margin-top: -30px;
+			}
+			#dashboard_manette
+			{
+			text-align: center;
+			background-color: white;
+			padding: 20px 0px 0px 0px;
+			border: 4px solid #A5A5A5;
+			border-radius: 100px 100px 0px 0px;
+			}
+			.lidar
+			{
+			display: inline-block;
+			width: 10px;
+			height: 0%;
+			background-color: #00a814;
+			position: absolute;
+			/*transition: height .05s ease;*/
+			top: 50%;
+			}
+			.lidar_2
+			{
+			right: 0px;
+			}
+			.lidar_little
+			{
+			width: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<br />
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel with-nav-tabs panel-default">
+						<div class="panel-heading">
+							<ul class="nav nav-tabs">
+								<li class="active"><a href="#tab1default" data-toggle="tab"><span id="connection_icon" style="background-color: red; border-radius: 500px; padding: 0px 5px; font-size: 9px;vertical-align: middle;">&nbsp;</span> My Wifibot</a></li>
+								<li><a href="#gps" data-toggle="tab">GPS</a></li>
+								<li><a href="#tab2default" data-toggle="tab">Settings</a></li>
+							</ul>
+						</div>
+						<div class="panel-body">
+							<div class="tab-content">
+								<div class="tab-pane fade in active" id="tab1default">
+									<div id="tab1_up"></div>
+									<div id="tab1_low">
+										<div class="img-responsive" style="width: 640px; margin: 0 auto; position: relative; border: 3px solid #777;">
+											<div class="bl lidar"></div>
+											<div class="tl lidar lidar_3"></div>
+											<div class="br lidar lidar_2"></div>
+											<div class="tr lidar lidar_2 lidar_3"></div>
+											<canvas class="img-responsive" id="videoCanvas" width="640" height="480" style="margin: 0 auto;"></canvas>
+										</div>
+										<br />
+										<div id="dashboard">
+											<div class="row">
+												<div id="dashboard_manette" style="float: none; margin: 0 auto;" class="col-lg-6 col-md-7">
+													<canvas id="gauge1" width="150" height="150" data-type="canv-gauge" data-value="0"
+														data-title="Battery" data-min-value="0" data-max-value="20" data-major-ticks="0 5 10 15 20"
+														data-minor-ticks="2" data-stroke-ticks="true" data-units="Volt (V)" data-value-format="2.2"
+														data-glow="true" data-animation-delay="10" data-animation-duration="200"
+														data-animation-fn="bounce" data-colors-needle="#f00 #00f" data-highlights="0 5 #ff0000, 5 10 #FFA500, 10 15 #ffff00, 15 20 #00ff00"></canvas>
+													<!--<canvas id="mycanvas" class="hidden-xs hidden-sm" width="400" height="150"></canvas>-->
+													<canvas id="gauge2" width="150" height="150" data-type="canv-gauge"
+														data-title="Speed" data-min-value="0" data-max-value="2" data-major-ticks="0 0.25 0.5 0.75 1 1.5 1.75 2"
+														data-minor-ticks="2" data-stroke-ticks="true" data-units="m/s" data-value-format="1.2"
+														data-glow="true" data-animation-delay="10" data-animation-duration="200"
+														data-animation-fn="bounce" data-colors-needle="#f00 #00f"></canvas>
+													<div style="background-color: #e2e2e2; border-top: 1px solid #a5a5a5;"><button id="control_btn" class="btn btn-xs btn-success" style="vertical-align: 50%; z-index: 21; position: relative; min-width: 60px">Control</button> <canvas id="display_odometry_left" width="120" height="30" style="background-color: #E2E2E2; padding: 0 10px;">
+													  Your browser is unfortunately not supported.
+													</canvas><canvas id="display_intensite" width="90" height="28" style="background-color: #E2E2E2; padding: 0 10px;">
+													  Your browser is unfortunately not supported.
+													</canvas><canvas id="display_odometry_right" width="120" height="30" style="background-color: #E2E2E2; padding: 0 10px;">
+													  Your browser is unfortunately not supported.
+													</canvas> <button class="btn btn-xs btn-default" style="vertical-align: 50%; z-index: 21; position: relative; min-width: 60px">F1</button></div>
+												</div>
+											</div>
+										</div>
+										<img id="joystick_img_out" src="pointer_in.png" style="position: absolute; display: none; z-index: 10">
+										<img id="joystick_img_in" src="pointer_out.png" style="position: absolute; display: none; z-index: 10">
+									</div>
+								</div>
+								<div class="tab-pane fade" id="gps">
+									<button id="trace_map" class="btn btn-primary">Disable trace</button> <button id="reset_trace_map" class="btn btn-primary">Reset trace</button> <button id="recenter_map" class="btn btn-primary">Recenter</button> <button id="follow_map" class="btn btn-primary">Unfollow my Wifibot</button>
+									<hr style="margin-top: 15px">
+									<div style="position: relative;">
+										<div class="img-responsive" style="right: 0px; width: 300px; margin: 0 auto; position: absolute; z-index: 20; border: 3px solid #777;">
+											<div class="bl lidar lidar_little"></div>
+											<div class="tl lidar lidar_3 lidar_little"></div>
+											<div class="br lidar lidar_2 lidar_little"></div>
+											<div class="tr lidar lidar_2 lidar_3 lidar_little"></div>
+											<img id="stream" class="img-responsive" style="width: 700px; margin: 0 auto;" src="/?action=stream" />
+										</div>
+										<div id="map" style="width:100%;height:600px"></div>
+									</div>
+								</div>
+								<div class="tab-pane fade" id="tab2default">
+									<form>
+										<div class="form-group">
+											<label>IP address and port number of the server:</label>
+											<input type="text" class="form-control" id="ip_and_port_server">
+										</div>
+										<div class="form-group">
+											<label>Enable GPS mapping:</label>
+											<select id="enable_gps_mapping" class="form-control">
+												<option>Yes</option>
+												<option>No</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label>Enable sensors:</label>
+											<select id="enable_sensors" class="form-control">
+												<option>Yes</option>
+												<option>No</option>
+											</select>
+										</div>
+									</form>
+									<button id="update_config" class="btn btn-primary btn-block">Update</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<canvas id="gauge" style="display: none;"></canvas>
+		<script src="jquery.min.js"></script>
+		<script src="jquery-3.1.1.min.js"></script>
+		<script src="jquery.cookie.js"></script>
+		<script src="bootstrap.min.js"></script>
+		<script type="text/javascript" src="smoothie.js"></script>
+		<script src="sprintf.js"></script>
+		<script src="virtualjoystick.js"></script>
+		<script src="gauge.min.js"></script>
+		<script type="text/javascript" src="jsmpg.js"></script>
+		<script type="text/javascript">
+			var client = new WebSocket( 'ws://192.168.11.13:8084/' );
+			var canvas = document.getElementById('videoCanvas');
+			var player = new jsmpeg(client, {canvas:canvas});
+		</script>
+		<!--[if lt IE 9]>
+		  <script type="text/javascript" src="excanvas.js"></script>
+		<![endif]-->
+		<script type="text/javascript" src="segment-display.js"></script>
+		<script type="text/javascript">
+			var control_btn = false;
+			$("#control_btn").on("click", function()
+			{
+				if (control_btn == false)
+				{
+					control_btn = true;
+					$('#control_btn').removeClass('btn-success').addClass('btn-danger').addClass('active');
+				}
+				else
+				{
+					control_btn = false;
+					$('#control_btn').addClass('btn-success').removeClass('btn-danger').removeClass('active');
+				}
+			});
+			var display_odometry_left = new SegmentDisplay("display_odometry_left");
+			display_odometry_left.pattern         = "######";
+			display_odometry_left.displayAngle    = 7;
+			display_odometry_left.digitHeight     = 20;
+			display_odometry_left.digitWidth      = 14;
+			display_odometry_left.digitDistance   = 2.5;
+			display_odometry_left.segmentWidth    = 2;
+			display_odometry_left.segmentDistance = 0.3;
+			display_odometry_left.segmentCount    = 7;
+			display_odometry_left.cornerType      = 3;
+			display_odometry_left.colorOn         = "#090909";
+			display_odometry_left.colorOff        = "#C8C8C8";
+			display_odometry_left.draw();
+			display_odometry_left.setValue('--------');
+			var display_odometry_right = new SegmentDisplay("display_odometry_right");
+			display_odometry_right.pattern         = "######";
+			display_odometry_right.displayAngle    = 7;
+			display_odometry_right.digitHeight     = 20;
+			display_odometry_right.digitWidth      = 14;
+			display_odometry_right.digitDistance   = 2.5;
+			display_odometry_right.segmentWidth    = 2;
+			display_odometry_right.segmentDistance = 0.3;
+			display_odometry_right.segmentCount    = 7;
+			display_odometry_right.cornerType      = 3;
+			display_odometry_right.colorOn         = "#090909";
+			display_odometry_right.colorOff        = "#C8C8C8";
+			display_odometry_right.draw();
+			display_odometry_right.setValue('--------');
+			var display_intensite = new SegmentDisplay("display_intensite");
+			display_intensite.pattern         = "##.#";
+			display_intensite.displayAngle    = 7;
+			display_intensite.digitHeight     = 20;
+			display_intensite.digitWidth      = 14;
+			display_intensite.digitDistance   = 2.5;
+			display_intensite.segmentWidth    = 2;
+			display_intensite.segmentDistance = 0.3;
+			display_intensite.segmentCount    = 7;
+			display_intensite.cornerType      = 3;
+			display_intensite.colorOn         = "#FF4545";
+			display_intensite.colorOff        = "#C8C8C8";
+			display_intensite.draw();
+			display_intensite.setValue('----');
+			if ($.cookie("enable_gps_mapping") == "Yes")
+			{
+			    var jsElm = document.createElement("script");
+			    jsElm.type = "application/javascript";
+			    jsElm.src = "https://maps.googleapis.com/maps/api/js";
+			    document.body.appendChild(jsElm);
+			}
+			//
+			// About map
+			//
+			var LAT = 48.8584;
+			var LNG = 2.2945;
+			var map_already_opened = false;
+			var marker;
+			var map;
+			var infowindow;
+			var poly;
+			var poly_marker = [];
+			var follow = true;
+			function myMap() {
+			  var mapCanvas = document.getElementById("map");
+			  var mapOptions = {
+			    center: new google.maps.LatLng(LAT, LNG),
+			    zoom: 18,
+			    mapTypeId: google.maps.MapTypeId.ROADMAP
+			  }
+			  map = new google.maps.Map(mapCanvas, mapOptions);
+			  marker = new google.maps.Marker({
+			    position: {lat: LAT, lng: LNG},
+			    map: map,
+			    title: 'My Wifibot'
+			  });
+			  infowindow = new google.maps.InfoWindow({
+			    content: "NULL"
+			  });
+			  infowindow.open(map, marker);
+			  poly = new google.maps.Polyline({
+			    map: map,
+			    path: poly_marker,
+				geodesic: true,
+				strokeColor: '#FF0000',
+				strokeOpacity: 0.7,
+				strokeWeight: 3
+			  });
+			}
+			$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			  if ($(e.target).attr("href") == "#gps")
+			  {
+			  	if (map_already_opened == false)
+			  	{
+			  		if ($.cookie("enable_gps_mapping") == "Yes")
+				  		myMap();
+			  		map_already_opened = true;
+			  	}
+			  	google.maps.event.trigger(map, "resize");
+				var latLng = marker.getPosition(); // returns LatLng object
+				map.setCenter(latLng); // setCenter takes a LatLng object
+			  }
+			});
+			$("#recenter_map").on("click", function()
+			{
+				var latLng = marker.getPosition(); // returns LatLng object
+				map.setCenter(latLng); // setCenter takes a LatLng object
+			});
+			$("#trace_map").on("click", function()
+			{
+				if ($("#trace_map").html() == "Disable trace")
+				{
+					poly.setOptions({
+					        strokeWeight: 0
+					      });
+					$("#trace_map").html("Enable trace");
+				}
+				else
+				{
+					poly.setOptions({
+					        strokeWeight: 2
+					      });
+					$("#trace_map").html("Disable trace");
+				}
+			});
+			$("#reset_trace_map").on("click", function()
+			{
+				poly.setPath([]);
+			});
+			$("#follow_map").on("click", function()
+			{
+				console.log("salut");
+				if ($("#follow_map").html() == "Follow my Wifibot")
+				{
+					follow = true;
+					$("#follow_map").html("Unfollow my Wifibot");
+				}
+				else
+				{
+					follow = false;
+					$("#follow_map").html("Follow my Wifibot");
+				}
+			});
+			
+			//
+			// About gauges
+			//
+			var gauge = new Gauge({
+				renderTo: 'gauge'
+			});
+			//var tmp_bit_batterie = 1;
+			//var tmp_gauge_batterie = 0;
+			//var tmp_bit_vitesse = 1;
+			//var tmp_gauge_vitesse = 0;
+			
+			
+			//
+			// About lidar
+			//
+			function getGreenToRed(percent){
+			            r = percent<50 ? 255 : Math.floor(255-(percent*2-100)*255/100);
+			            g = percent>50 ? 255 : Math.floor((percent*2)*255/100);
+			            return 'rgb('+r+','+g+',0)';
+			        }
+			//var b = 0;
+			//var distance = 0;
+			//setInterval(function(){setDistance(200, 75, 25, 75);}, 50)
+			function setDistance (tl, tr, br, bl) {
+				if ($.cookie("enable_sensors") == "Yes")
+				{
+					tl = (tl < 0) ? (0) : (tl);
+					tl = (tl > 255) ? (255) : (tl);
+
+					tr = (tr < 0) ? (0) : (tr);
+					tr = (tr > 255) ? (255) : (tr);
+
+					br = (br < 0) ? (0) : (br);
+					br = (br > 255) ? (255) : (br);
+
+					bl = (bl < 0) ? (0) : (bl);
+					bl = (bl > 255) ? (255) : (bl);
+
+					//console.log(tl + " " + tr + " " + br + " " + bl);
+
+					var distance = tl * 50 / 255;
+					$('.tl').css('height', distance + '%');
+					$('.tl').css('background-color', getGreenToRed(100 - distance * 2));
+					$('.tl').css('top', (50 - distance) + "%");
+					distance = tr * 50 / 255;
+					$('.tr').css('height', distance + '%');
+					$('.tr').css('background-color', getGreenToRed(100 - distance * 2));
+					$('.tr').css('top', (50 - distance) + "%");
+					distance = bl * 50 / 255;
+					$('.bl').css('height', distance + '%');
+					$('.bl').css('background-color', getGreenToRed(100 - distance * 2));
+					distance = br * 50 / 255;
+					$('.br').css('height', distance + '%');
+					$('.br').css('background-color', getGreenToRed(100 - distance * 2));
+				}
+
+				/*if (b == 0)
+					distance = (distance + 1);
+				else
+					distance = (distance - 1);
+				if (distance == 50 || distance == 0)
+					b = 1 - b;*/
+				/*$('.lidar').css('height', distance + '%');
+				$('.lidar').css('background-color', getGreenToRed(100 - distance * 2));
+				$('.lidar_3').css('top', (50 - distance) + "%");*/
+			}
+			
+			
+			//
+			// Some basics
+			//
+			var conok = 0;
+			var ttl_x_virtual = 0;
+			var ttl_x_physical = 0;
+			var ttl_y_virtual = 0;
+			var ttl_y_physical = 0;
+			
+			
+			//
+			// About chart
+			//
+			var smoothie = new SmoothieChart();
+			var smoothie_line = new Array();
+			smoothie_line.push(new TimeSeries());
+			smoothie_line.push(new TimeSeries());
+			
+			// About virtual joystick
+			var enable_virtual_joystick = 0;
+			var init_x_virtual = 0;
+			var init_y_virtual = 0;
+			$("#tab1_up").on('touchmove',function(e){
+			  e.preventDefault();
+			});
+			$("#tab1_up").bind('mousemove touchmove', function(e) {
+				if (enable_virtual_joystick == 1)
+				{
+					var pos   = $(this).offset();
+					var elPos = { X:pos.left , Y:pos.top };
+					var mPos  = { X:e.clientX-elPos.X, Y:e.clientY-elPos.Y };
+					x = e.pageX - elPos.X;
+					y = e.pageY - elPos.Y;
+					if ((isNaN(mPos.X) || isNaN(mPos.Y)) && (e.touches.length == 1)){
+						var touch = e.touches[0];
+						var node = touch.target;
+						mPos.X = touch.pageX - elPos.X;
+						mPos.Y = touch.pageY - elPos.Y;
+					}
+					else
+					{
+						mPos.X = x;
+						mPos.Y = y;
+					}
+					ttl_x_virtual = mPos.X - init_x_virtual;
+					ttl_y_virtual = mPos.Y - init_y_virtual;
+					$("#joystick_img_in").css("top", (mPos.Y - 12) + "px");
+					$("#joystick_img_in").css("left", (mPos.X - 12) + "px");
+					//console.log("Mouse position x:"+ ttl_x_virtual +" y:"+ ttl_y_virtual);
+				}
+			});
+			$("#tab1_up").bind('mouseup touchend', function(event) {
+				//console.log("uh");
+				enable_virtual_joystick = 0;
+				init_x_virtual = 0;
+				init_y_virtual = 0;
+				ttl_x_virtual = 0;
+				ttl_y_virtual = 0;
+				$("#joystick_img_in").css("display", "none");
+				$("#joystick_img_out").css("display", "none");
+			});
+			$("#tab1_up").bind('mousedown touchstart', function(e) {
+				//console.log("oh");
+				enable_virtual_joystick = 1;
+				var pos   = $(this).offset();
+				var elPos = { X:pos.left , Y:pos.top };
+				var mPos  = { X:e.clientX-elPos.X, Y:e.clientY-elPos.Y };
+				x = e.pageX - elPos.X;
+				y = e.pageY - elPos.Y;
+				if ((isNaN(mPos.X) || isNaN(mPos.Y)) && (e.touches.length == 1)){
+					var touch = e.touches[0];
+					var node = touch.target;
+					mPos.X = touch.pageX - elPos.X;
+					mPos.Y = touch.pageY - elPos.Y;
+				}
+				else
+				{
+					mPos.X = x;
+					mPos.Y = y;
+				}
+				init_x_virtual = mPos.X;
+				init_y_virtual = mPos.Y;
+				$("#joystick_img_in").css("top", (mPos.Y - 12) + "px");
+				$("#joystick_img_in").css("left", (mPos.X - 12) + "px");
+				$("#joystick_img_in").css("display", "block");
+				$("#joystick_img_out").css("top", (mPos.Y - 25) + "px");
+				$("#joystick_img_out").css("left", (mPos.X - 25) + "px");
+				$("#joystick_img_out").css("display", "block");
+			});
+			
+			
+			//
+			// About the Settings tab
+			//
+			if (!$.cookie("ip_and_port_server"))
+				$.cookie("ip_and_port_server", "192.168.2.106:7681", { expires: 20 * 365 });
+			if (!$.cookie("enable_gps_mapping"))
+				$.cookie("enable_gps_mapping", "No", { expires: 20 * 365 });
+			if (!$.cookie("enable_sensors"))
+				$.cookie("enable_sensors", "No", { expires: 20 * 365 });
+			$("#ip_and_port_server").val($.cookie("ip_and_port_server"));
+			$("#enable_gps_mapping").val($.cookie("enable_gps_mapping"));
+			$("#enable_sensors").val($.cookie("enable_sensors"));
+			$("#update_config").on("click", function()
+			{
+				$.cookie("ip_and_port_server", $("#ip_and_port_server").val(), { expires: 20 * 365 });
+				$.cookie("enable_gps_mapping", $("#enable_gps_mapping").val(), { expires: 20 * 365 });
+				$.cookie("enable_sensors", $("#enable_sensors").val(), { expires: 20 * 365 });
+			});
+			
+			
+			//
+			// About the websocket initialization
+			//
+			function pad (str, max) {
+			  str = str.toString();
+			  return str.length < max ? pad("0" + str, max) : str;
+			}
+			function initWebSocket()
+			{
+				console.log("hello");
+				websocket = new WebSocket('ws://' + $.cookie("ip_and_port_server"));
+				websocket.binaryType = 'arraybuffer';
+				websocket.onopen = function(evt) { onOpen(evt) };
+				websocket.onclose = function(evt) { onClose(evt) };
+				websocket.onmessage = function(evt) { onMessage(evt) };
+				websocket.onerror = function(evt) { onError(evt) };
+			}
+			function onOpen(evt) {
+				$("#connection_icon").css("background-color", "#48a200");
+				conok = 1;
+			}
+			function onClose(evt) {
+				$("#connection_icon").css("background-color", "red");
+				conok = 0;
+				ttl_y_virtual = 0;
+				ttl_y_physical = 0;
+				ttl_x_virtual = 0;
+				ttl_x_physical = 0;
+				display_odometry_left.setValue(0);
+				display_odometry_right.setValue(0);
+				display_intensite.setValue("00.0");
+				Gauge.Collection.get('gauge2').setValue(0);
+				Gauge.Collection.get('gauge1').setValue(0);
+				setDistance(0, 0, 0, 0);
+				setTimeout(function() {
+					initWebSocket();
+				}, 200);
+			}
+			function onMessage(evt) {
+				var data = evt.data;
+				var dv = new DataView(data);
+				var speedLeft = parseInt((dv.getUint8(1) << 8) + dv.getUint8(0));
+				if (speedLeft > 32767) speedLeft -= 65536;
+				var speedRight= parseInt((dv.getUint8(10) << 8) + dv.getUint8(9));
+				if (speedRight > 32767) speedRight -= 65536;
+				var speedAvg = Math.abs((speedLeft + speedRight) / 2);
+				speedAvg = (speedAvg / 100 < 2) ? (speedAvg) : (200);
+				var battery = parseInt(dv.getUint8(2));
+				var odometry_left = (dv.getUint8(8) << 24) + (dv.getUint8(7) << 16) + (dv.getUint8(6) << 8) + (dv.getUint8(5));
+				var odometry_right = (dv.getUint8(16) << 24) + (dv.getUint8(15) << 16) + (dv.getUint8(14) << 8) + (dv.getUint8(13));
+				display_odometry_left.setValue(odometry_left.toString());
+				display_odometry_right.setValue(odometry_right.toString());
+				display_intensite.setValue(pad((dv.getUint8(17) / 10).toFixed(1).toString(), 4).toString());
+				Gauge.Collection.get('gauge2').setValue(speedAvg / 100);
+				Gauge.Collection.get('gauge1').setValue(battery / 10);
+				setDistance(dv.getUint8(3), dv.getUint8(11), dv.getUint8(12), dv.getUint8(4));
+			}
+			function onError(evt) {}
+			function doSend(message) {}
+			setTimeout(function() {
+				smoothie.streamTo(document.getElementById("mycanvas"));
+				smoothie.addTimeSeries(smoothie_line[0], { strokeStyle: 'rgba(255, 0, 0, 1)',   lineWidth: 2 });
+				smoothie.addTimeSeries(smoothie_line[1], { strokeStyle: 'rgba(0, 255, 0, 1)',   lineWidth: 2 });
+				initWebSocket();
+			}, 1000);
+			
+			
+			//
+			// About sending X and Y to the server
+			//
+			setInterval(function() {
+				if (conok == 1) {
+					arr = new ArrayBuffer(8);
+					view = new DataView(arr);
+					view.setInt16(0, -ttl_x_virtual - ttl_x_physical, false);
+					view.setInt16(2, ttl_y_virtual + ttl_y_physical, false);
+					view.setInt16(4, -ttl_x_virtual - ttl_x_physical, false);
+					view.setInt16(6, ttl_y_virtual + ttl_y_physical, false);
+					//console.log((-ttl_x_virtual - ttl_x_physical) + " " + (ttl_y_virtual + ttl_y_physical));
+					websocket.send(arr);
+				}
+				//if (tmp_bit_batterie == 1)
+				//	tmp_gauge_batterie += 0.10;
+				//else
+				//	tmp_gauge_batterie -= 0.10;
+				//if (tmp_gauge_batterie <= 0 || tmp_gauge_batterie >= 20)
+				//	tmp_bit_batterie = 1 - tmp_bit_batterie;
+				//if (tmp_bit_vitesse == 1)
+				//	tmp_gauge_vitesse += 0.01;
+				//else
+				//	tmp_gauge_vitesse -= 0.01;
+				//if (tmp_gauge_vitesse <= 0 || tmp_gauge_vitesse >= 2)
+				//	tmp_bit_vitesse = 1 - tmp_bit_vitesse;
+				//Gauge.Collection.get('gauge1').setValue(tmp_gauge_batterie);
+				//Gauge.Collection.get('gauge2').setValue(tmp_gauge_vitesse);
+				smoothie_line[0].append(new Date().getTime(), ttl_x_virtual + ttl_x_physical);
+				smoothie_line[1].append(new Date().getTime(), ttl_y_virtual + ttl_y_physical);
+				gauge.draw();
+				LAT -= 0.000001 * (Math.random() * 10);
+				LNG += 0.000001 * (Math.random() * 10);
+				if ($.cookie("enable_gps_mapping") == "Yes")
+				{
+					if (marker)
+					{
+						marker.setPosition({lat: LAT, lng: LNG});
+				                 infowindow.setContent("<div style='min-width: 100px'><h4 style='color: black'>My Wifibot</h4><span style='color: black;'>Lat : "+Math.round(LAT * 1000000) / 1000000+"<br />Lng : "+Math.round(LNG * 1000000) / 1000000+"</span></div>");
+				 				var path = poly.getPath();
+					    path.push(new google.maps.LatLng(LAT, LNG));
+					    poly.setPath(path);
+					    if (follow == true)
+					    {
+						    var latLng = marker.getPosition(); // returns LatLng object
+							map.setCenter(latLng); // setCenter takes a LatLng object
+						}
+					}
+					else
+					{
+						poly_marker.push({lat: LAT, lng: LNG});
+					}
+				}
+			}, 1 / 30 * 5000);
+			
+			
+			//
+			// About the physical joystick
+			//
+			var haveEvents = 'GamepadEvent' in window;
+			var haveWebkitEvents = 'WebKitGamepadEvent' in window;
+			var controllers = {};
+			var rAF = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.requestAnimationFrame;
+			function addgamepad(gamepad) {
+			  controllers[gamepad.index] = gamepad; 
+			  rAF(updateStatus);
+			}
+			function connecthandler(e) { addgamepad(e.gamepad); }
+			function disconnecthandler(e) { removegamepad(e.gamepad); }
+			function removegamepad(gamepad) { delete controllers[gamepad.index]; }
+			function updateStatus() {
+			  scangamepads();
+			  var controller = controllers[0];
+			  ttl_x_physical = 110 * controller.axes[0].toFixed(4);
+			  ttl_y_physical = 110 * controller.axes[1].toFixed(4);
+			  //console.log(ttl_x_physical + ttl_y_physical);
+			  rAF(updateStatus);
+			}
+			function scangamepads() {
+			  var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+			  for (var i = 0; i < gamepads.length; i++) {
+			    if (gamepads[i]) {
+			      if (!(gamepads[i].index in controllers)) {
+			        addgamepad(gamepads[i]);
+			      } else {
+			        controllers[gamepads[i].index] = gamepads[i];
+			      }
+			    }
+			  }
+			}
+			if (haveEvents) {
+			  window.addEventListener("gamepadconnected", connecthandler);
+			  window.addEventListener("gamepaddisconnected", disconnecthandler);
+			} else if (haveWebkitEvents) {
+			  window.addEventListener("webkitgamepadconnected", connecthandler);
+			  window.addEventListener("webkitgamepaddisconnected", disconnecthandler);
+			} else {
+			  setInterval(scangamepads, 500);
+			}
+		</script>
+	</body>
+</html>
+
