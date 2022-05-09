@@ -1,0 +1,6 @@
+[submodule "ffmpeg"]
+	path = ffmpeg
+	url = ./ffmpeg/
+[submodule "libwebsockets"]
+	path = libwebsockets
+	url = ./libwebsockets/
